@@ -12,27 +12,21 @@
 
     
     <meta name="description" content="free 中有2个重要的参数 buffers和cached，这2个参数到底是什么意思，百度了各种文章，大多概念混淆、含糊不清，难以得到满意的答案，今天做一个源码探索，期望有所收获。
-从网络资料可以探究到free是procps软件包的一部分，从网上下载procps源码，很容易看出free.c就是free的入口，main函数中meminfo()是关键
-
-顺着include可以找到proc下的sysin">
+从网络资料可以探究到free是procps软件包的一部分，从网上下载procps源码，很容易看出free.c就是free的入口，main函数中meminfo()是关键">
 <meta property="og:type" content="article">
 <meta property="og:title" content="free中的buffers和cached(1)">
 <meta property="og:url" content="http://www.zhenghongzhi.cn/2015/06/02/buffers-and-cached/index.html">
 <meta property="og:site_name" content="郑鸿志的博客">
 <meta property="og:description" content="free 中有2个重要的参数 buffers和cached，这2个参数到底是什么意思，百度了各种文章，大多概念混淆、含糊不清，难以得到满意的答案，今天做一个源码探索，期望有所收获。
-从网络资料可以探究到free是procps软件包的一部分，从网上下载procps源码，很容易看出free.c就是free的入口，main函数中meminfo()是关键
-
-顺着include可以找到proc下的sysin">
+从网络资料可以探究到free是procps软件包的一部分，从网上下载procps源码，很容易看出free.c就是free的入口，main函数中meminfo()是关键">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/free.c.png">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/sysinfo.c.2.png">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/sysinfo.c.1.png">
-<meta property="og:updated_time" content="2015-06-02T11:57:42.314Z">
+<meta property="og:updated_time" content="2015-06-02T12:15:41.190Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="free中的buffers和cached(1)">
 <meta name="twitter:description" content="free 中有2个重要的参数 buffers和cached，这2个参数到底是什么意思，百度了各种文章，大多概念混淆、含糊不清，难以得到满意的答案，今天做一个源码探索，期望有所收获。
-从网络资料可以探究到free是procps软件包的一部分，从网上下载procps源码，很容易看出free.c就是free的入口，main函数中meminfo()是关键
-
-顺着include可以找到proc下的sysin">
+从网络资料可以探究到free是procps软件包的一部分，从网上下载procps源码，很容易看出free.c就是free的入口，main函数中meminfo()是关键">
 
     
     <link rel="alternative" href="/atom.xml" title="郑鸿志的博客" type="application/atom+xml">
@@ -112,12 +106,11 @@
 		</div>
 		
 		<p>free 中有2个重要的参数 buffers和cached，这2个参数到底是什么意思，百度了各种文章，大多概念混淆、含糊不清，难以得到满意的答案，今天做一个源码探索，期望有所收获。</p>
-<p>从网络资料可以探究到free是procps软件包的一部分，从网上下载procps源码，很容易看出free.c就是free的入口，main函数中meminfo()是关键</p>
-<p><img src="/images/free.c.png" alt=""></p>
+<p>从网络资料可以探究到free是procps软件包的一部分，从网上下载procps源码，很容易看出free.c就是free的入口，main函数中meminfo()是关键<br><a id="more"></a><br><img src="http://www.zhenghongzhi.cn/images/free.c.png" alt=""></p>
 <p>顺着include可以找到proc下的sysinfo.c的void meminfo(void)。</p>
-<p><img src="/images/sysinfo.c.2.png" alt=""></p>
+<p><img src="http://www.zhenghongzhi.cn/images/sysinfo.c.2.png" alt=""></p>
 <p>初步判断数据应该来源于函数中的FILE_TO_BUF(MEMINFO_FILE,meminfo_fd);</p>
-<p><img src="/images/sysinfo.c.1.png" alt=""></p>
+<p><img src="http://www.zhenghongzhi.cn/images/sysinfo.c.1.png" alt=""></p>
 <p>从#define MEMINFO_FILE “/proc/meminfo” 可以判断出数据来源于操作系统的/proc/meminfo，就像procps官网的介绍那样 [procps is the package that has a bunch of small useful utilities that give information about processes using the /proc filesystem]。</p>
   
 	</div>
