@@ -76,6 +76,56 @@
 
    
     
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/06/02/buffers-and-cached/" title="free中的buffers和cached(1)" itemprop="url">free中的buffers和cached(1)</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
+		
+  <p class="article-time">
+    <time datetime="2015-06-02T07:39:04.000Z" itemprop="datePublished"> 发表于 2015-06-02</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>free 中有2个重要的参数 buffers和cached，这2个参数到底是什么意思，百度各种文章含糊其词，难以得到满意的答案，今天做一个源码探索，期望有所收获。<br>free是procps软件包的一部分，从网上下载procps源码，很容易看出free.c就是free的入口，main函数中meminfo()是关键，顺着include可以找到 proc下的sysinfo.c 的void meminfo(void)。<br>初步判断数据应该来源于函数中的FILE_TO_BUF(MEMINFO_FILE,meminfo_fd);<br>从#define MEMINFO_FILE “/proc/meminfo” 可以猜出数据来源于 操作系统的/proc/meminfo</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
     <article class="post-expand my" itemprop="articleBody"> 
         <header class="article-info clearfix">
   <h1 itemprop="name">
