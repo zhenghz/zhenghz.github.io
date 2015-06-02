@@ -22,7 +22,8 @@
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/free.c.png">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/sysinfo.c.2.png">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/sysinfo.c.1.png">
-<meta property="og:updated_time" content="2015-06-02T12:15:41.190Z">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/free_meminfo.png">
+<meta property="og:updated_time" content="2015-06-02T13:48:52.778Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="free中的buffers和cached(1)">
 <meta name="twitter:description" content="free 中有2个重要的参数 buffers和cached，这2个参数到底是什么意思，百度了各种文章，大多概念混淆、含糊不清，难以得到满意的答案，今天做一个源码探索，期望有所收获。
@@ -112,6 +113,14 @@
 <p>初步判断数据应该来源于函数中的FILE_TO_BUF(MEMINFO_FILE,meminfo_fd);</p>
 <p><img src="http://www.zhenghongzhi.cn/images/sysinfo.c.1.png" alt=""></p>
 <p>从#define MEMINFO_FILE “/proc/meminfo” 可以判断出数据来源于操作系统的/proc/meminfo，就像procps官网的介绍那样 [procps is the package that has a bunch of small useful utilities that give information about processes using the /proc filesystem]。</p>
+<p>执行cat /proc/meminfo ;free 可以看出，/proc/meminfo 的Buffers、Cached与free是一致的</p>
+<p><img src="http://www.zhenghongzhi.cn/images/free_meminfo.png" alt=""></p>
+<p>从linux(2.6.24)源码下的文档(Documentation\filesystems\proc.txt)可以看到相关的解释</p>
+<pre><code>Buffers: Relatively temporary storage <span class="keyword">for</span> raw disk blocks
+         shouldn't <span class="keyword">get</span> tremendously large (<span class="number">20</span>MB <span class="keyword">or</span> so)
+Cached: <span class="keyword">in</span>-memory cache <span class="keyword">for</span> files <span class="command">read</span> <span class="keyword">from</span> <span class="keyword">the</span> disk (<span class="keyword">the</span>
+         pagecache).  Doesn't include SwapCached
+</code></pre><p>术语晦涩难懂，继续探索源码……</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -206,7 +215,7 @@
         
           <li>
             
-            	<a href="http://blog.csdn.net/tulituqi" target="_blank" title="老道长的测试生活">老道长的测试生活</a>
+            	<a href="http://qitaos.github.io/" target="_blank" title="老道长的测试生活">老道长的测试生活</a>
             
           </li>
         
