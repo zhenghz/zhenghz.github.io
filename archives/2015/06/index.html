@@ -1,10 +1,10 @@
 
- <!DOCTYPE HTML>
+  <!DOCTYPE HTML>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   
-    <title>郑鸿志的博客</title>
+    <title>归档: 2015/6 | 郑鸿志的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="郑鸿志">
@@ -14,7 +14,7 @@
     <meta name="description" content="郑鸿志的博客——关注软件质量">
 <meta property="og:type" content="website">
 <meta property="og:title" content="郑鸿志的博客">
-<meta property="og:url" content="http://www.zhenghongzhi.cn/index.html">
+<meta property="og:url" content="http://www.zhenghongzhi.cn/archives/2015/06/index.html">
 <meta property="og:site_name" content="郑鸿志的博客">
 <meta property="og:description" content="郑鸿志的博客——关注软件质量">
 <meta name="twitter:card" content="summary">
@@ -34,9 +34,9 @@
     <link rel="stylesheet" href="/css/style.css" type="text/css">
 </head>
 
-  <body>
-    <header>
-      
+    <body>
+      <header>
+        
 <div>
 		
 			<div id="imglogo">
@@ -70,189 +70,40 @@
 				</ul>
 			</nav>			
 </div>
-    </header>
-    <div id="container">
-      <div id="main">
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/06/02/buffers-and-cached/" title="free中的buffers和cached(1)" itemprop="url">free中的buffers和cached(1)</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
-		
-  <p class="article-time">
-    <time datetime="2015-06-02T07:39:04.000Z" itemprop="datePublished"> 发表于 2015-06-02</time>
-    
-  </p>
-</header>
-    <div class="article-content">
+      </header>
+      <div id="container">
         
-        <p>free 中有2个重要的参数 buffers和cached，这2个参数到底是什么意思，百度了各种文章，大多概念混淆、含糊不清，难以得到满意的答案，今天做一个源码探索，期望有所收获。</p>
-<p>从网络资料可以探究到free是procps软件包的一部分，从网上下载procps源码，很容易看出free.c就是free的入口，main函数中meminfo()是关键</p>
-<p><img src="images/free.c.png" alt=""></p>
-<p>顺着include可以找到proc下的sysinfo.c的void meminfo(void)。</p>
-<p>初步判断数据应该来源于函数中的FILE_TO_BUF(MEMINFO_FILE,meminfo_fd);</p>
-<p>从#define MEMINFO_FILE “/proc/meminfo” 可以判断出数据来源于操作系统的/proc/meminfo，就像procps官网的介绍那样 [procps is the package that has a bunch of small useful utilities that give information about processes using the /proc filesystem]。</p>
 
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>
-</div>
-
-
-  <div class="article-tags">
+<div class="archive-title" >
+  <h2 class="archive-icon">2015/6</h2>
   
-  <span></span> <a href="/tags/linux/">linux</a>
+  <div class="archiveslist archive-float clearfix">
+   <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">2015 年 06 月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">2015 年 05 月</a><span class="archive-list-count">1</span></li></ul>
+ </div>
+  
+</div>
+<div id="main" class="archive-part clearfix">
+  <div id="archive-page">
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2015/06/02/buffers-and-cached/" title="free中的buffers和cached(1)" itemprop="url">
+  
+
+    <time datetime="2015-06-02T07:39:04.000Z" itemprop="datePublished">2015-06-02</time>
+
+
+    <h1 itemprop="name">free中的buffers和cached(1)</h1>
+
+  </a>
+</section>
+
+
   </div>
-
 </div>
 
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand my" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/05/28/blog/" title="第一个博客" itemprop="url">第一个博客</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
-		
-  <p class="article-time">
-    <time datetime="2015-05-28T09:46:09.000Z" itemprop="datePublished"> 发表于 2015-05-28</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我是郑鸿志，这是我的第一个博客。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-
-</div>
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
-
-<div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
-<aside class="clearfix">
-
-  
-<div class="categorieslist">
-	<p class="asidetitle">分类</p>
-		<ul>
-		
-		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>1</sup></a></li>
-		  
-		
-		</ul>
-</div>
-
-
-  
-<div class="tagslist">
-	<p class="asidetitle">标签</p>
-		<ul class="clearfix">
-		
-			
-				<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
-			
-		
-		</ul>
-</div>
-
-
-  <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
-    <ul>
-        
-          <li>
-            
-            	<a href="http://blog.csdn.net/tulituqi" target="_blank" title="老道长的测试生活">老道长的测试生活</a>
-            
-          </li>
-        
-          <li>
-            
-            	<a href="http://jeffsui.github.io/pinghailinfeng_blog/" target="_blank" title="凭海临风的测试江湖">凭海临风的测试江湖</a>
-            
-          </li>
-        
-    </ul>
-</div>
-
-  
-
-
-  <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
-</div>
-
-</aside>
-</div>
-    </div>
-    <footer><div id="footer" >
+      </div>
+      <footer><div id="footer" >
 	
 	<div class="line">
 		<span></span>
@@ -289,7 +140,7 @@
 		</p>
 </div>
 </footer>
-    <script src="/js/jquery-2.0.3.min.js"></script>
+      <script src="/js/jquery-2.0.3.min.js"></script>
 <script src="/js/jquery.imagesloaded.min.js"></script>
 <script src="/js/gallery.js"></script>
 
@@ -397,5 +248,5 @@ $(document).ready(function(){
 
 <!-- Tiny_search End -->
 
-  </body>
- </html>
+    </body>
+   </html>
