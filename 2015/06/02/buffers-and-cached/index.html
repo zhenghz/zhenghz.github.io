@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>free中的buffers和cached(1) | 郑鸿志的博客</title>
+    <title>free中的buffers和cached | 郑鸿志的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="郑鸿志">
@@ -15,15 +15,15 @@
                      total       used       free     shared    buffers     cached
 Mem:      16436192   10914412    5521780          0     502256    5795248">
 <meta property="og:type" content="article">
-<meta property="og:title" content="free中的buffers和cached(1)">
+<meta property="og:title" content="free中的buffers和cached">
 <meta property="og:url" content="http://www.zhenghongzhi.cn/2015/06/02/buffers-and-cached/index.html">
 <meta property="og:site_name" content="郑鸿志的博客">
 <meta property="og:description" content="linux查看系统内存常用命令free中有2个重要的参数buffers和cached：
                      total       used       free     shared    buffers     cached
 Mem:      16436192   10914412    5521780          0     502256    5795248">
-<meta property="og:updated_time" content="2015-06-11T11:18:39.685Z">
+<meta property="og:updated_time" content="2015-06-11T13:05:33.010Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="free中的buffers和cached(1)">
+<meta name="twitter:title" content="free中的buffers和cached">
 <meta name="twitter:description" content="linux查看系统内存常用命令free中有2个重要的参数buffers和cached：
                      total       used       free     shared    buffers     cached
 Mem:      16436192   10914412    5521780          0     502256    5795248">
@@ -85,7 +85,7 @@ Mem:      16436192   10914412    5521780          0     502256    5795248">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/06/02/buffers-and-cached/" title="free中的buffers和cached(1)" itemprop="url">free中的buffers和cached(1)</a>
+      <a href="/2015/06/02/buffers-and-cached/" title="free中的buffers和cached" itemprop="url">free中的buffers和cached</a>
   </h1>
   <p class="article-author">By
        
@@ -111,8 +111,25 @@ Mem:      <span class="number">16436192</span>   <span class="number">10914412</
 -/+ buffers/cache:    <span class="number">4616908</span>   <span class="number">11819284</span>
 Swap:      <span class="number">4096532</span>        116    <span class="number">4096416</span>
 </code></pre><p>这2个参数到底是什么意思，百度了各种文章，大多概念混淆、含糊不清，难以得到满意的答案，今天做一个源码探索，发现free原来就是获取/proc/meminfo中对应的参数。</p>
-<p>执行 free;cat /proc/meminfo，两边的 buffers、cached完全一致<br>                     total       used       free     shared    buffers     cached<br>        Mem:      16436192   10914716    5521476          0     502256    5795248<br>        -/+ buffers/cache:    4617212   11818980<br>        Swap:      4096532        116    4096416<br>        MemTotal:     16436192 kB<br>        MemFree:       5521468 kB<br>        Buffers:        502256 kB<br>        Cached:        5795248 kB<br>        SwapCached:         12 kB<br>        Active:        6215352 kB<br>        Inactive:      4218000 kB<br>        HighTotal:           0 kB<br>        HighFree:            0 kB<br>        LowTotal:     16436192 kB<br>        LowFree:       5521468 kB<br>        SwapTotal:     4096532 kB<br>        SwapFree:      4096416 kB<br>        Dirty:             108 kB<br>        Writeback:           0 kB<br>        AnonPages:     4135824 kB<br>        Mapped:          42364 kB<br>        Slab:           425984 kB<br>        PageTables:      21056 kB<br>        NFS_Unstable:        0 kB<br>        Bounce:              0 kB<br>        CommitLimit:  12314628 kB<br>        Committed_AS:  8258188 kB<br>        VmallocTotal: 34359738367 kB<br>        VmallocUsed:    265104 kB<br>        VmallocChunk: 34359472931 kB<br>        HugePages_Total:     0<br>        HugePages_Free:      0<br>        HugePages_Rsvd:      0<br>        Hugepagesize:     2048 kB</p>
-<p>不仅仅如此，top、vmstat、uptime等等一堆重要的命令中的数据都来自于/proc下的文件。</p>
+<p>执行 free;cat /proc/meminfo，两边的 buffers、cached完全一致</p>
+<pre><code>             total       used       free     shared    buffers     cached
+<span class="string">Mem:</span>      <span class="number">16436192</span>   <span class="number">10914716</span>    <span class="number">5521476</span>          <span class="number">0</span>     <span class="number">502256</span>    <span class="number">5795248</span>
+-<span class="regexp">/+ buffers/</span><span class="string">cache:</span>    <span class="number">4617212</span>   <span class="number">11818980</span>
+<span class="string">Swap:</span>      <span class="number">4096532</span>        <span class="number">116</span>    <span class="number">4096416</span>
+<span class="string">MemTotal:</span>     <span class="number">16436192</span> kB
+<span class="string">MemFree:</span>       <span class="number">5521468</span> kB
+<span class="string">Buffers:</span>        <span class="number">502256</span> kB
+<span class="string">Cached:</span>        <span class="number">5795248</span> kB
+<span class="string">SwapCached:</span>         <span class="number">12</span> kB
+<span class="string">Active:</span>        <span class="number">6215352</span> kB
+<span class="string">Inactive:</span>      <span class="number">4218000</span> kB
+<span class="string">HighTotal:</span>           <span class="number">0</span> kB
+.....
+<span class="string">HugePages_Total:</span>     <span class="number">0</span>
+<span class="string">HugePages_Free:</span>      <span class="number">0</span>
+<span class="string">HugePages_Rsvd:</span>      <span class="number">0</span>
+<span class="string">Hugepagesize:</span>     <span class="number">2048</span> kB
+</code></pre><p>不仅仅如此，top、vmstat、uptime等等一堆重要的命令中的数据都来自于/proc下的文件。</p>
 <p>下面就聊聊源码的探索过程。<br><a id="more"></a><br>从网络资料可以探究到free是procps软件包的一部分，从网上下载procps源码(3.2.3)，很容易看出free.c就是free的入口，main函数中meminfo()是关键</p>
 <pre><code>do {
     meminfo<span class="params">()</span>;
@@ -252,40 +269,40 @@ nextline:
 Cached: <span class="keyword">in</span>-memory cache <span class="keyword">for</span> files <span class="command">read</span> <span class="keyword">from</span> <span class="keyword">the</span> disk (<span class="keyword">the</span>
         pagecache).  Doesn't include SwapCached
 </code></pre><p>下一步，尝试根据“MemTotal”搜索源码，可以找到源码位于fs\proc\Meminfo.c中，这是一个很幸运的开始。linux源码的目录结构还是挺清晰的，为各种查找和猜测提供了极大的遍历。</p>
-<pre><code>static int meminfo_proc_show<span class="params">(struct seq_file *m, void *v)</span>
-{
-    struct sysinfo i;
-    unsigned long committed;
-    unsigned long allowed;
-    struct vmalloc_info vmi;
-    long cached;
-    unsigned long pages[NR_LRU_LISTS];
-    int lru;
+<pre><code><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">meminfo_proc_show</span><span class="params">(<span class="keyword">struct</span> seq_file *m, <span class="keyword">void</span> *v)</span>
+</span>{
+    <span class="keyword">struct</span> sysinfo i;
+    <span class="keyword">unsigned</span> <span class="keyword">long</span> committed;
+    <span class="keyword">unsigned</span> <span class="keyword">long</span> allowed;
+    <span class="keyword">struct</span> vmalloc_info vmi;
+    <span class="keyword">long</span> cached;
+    <span class="keyword">unsigned</span> <span class="keyword">long</span> pages[NR_LRU_LISTS];
+    <span class="keyword">int</span> lru;
 
 <span class="comment">/*
  * display in kilobytes.
  */</span>
-<span class="built_in">#</span>define K<span class="params">(x)</span> <span class="params">(<span class="params">(x)</span> &lt;&lt; <span class="params">(PAGE_SHIFT - <span class="number">10</span>)</span>)</span>
-    si_meminfo<span class="params">(&amp;i)</span>;
-    si_swapinfo<span class="params">(&amp;i)</span>;
-    committed = percpu_counter_read_positive<span class="params">(&amp;vm_committed_as)</span>;
-    allowed = <span class="params">(<span class="params">(totalram_pages - hugetlb_total_pages<span class="params">()</span>)</span>
-        * sysctl_overcommit_ratio / <span class="number">100</span>)</span> + total_swap_pages;
+<span class="preprocessor">#<span class="keyword">define</span> K(x) ((x) &lt;&lt; (PAGE_SHIFT - 10))</span>
+    si_meminfo(&amp;i);
+    si_swapinfo(&amp;i);
+    committed = percpu_counter_read_positive(&amp;vm_committed_as);
+    allowed = ((totalram_pages - <span class="keyword">hugetlb_t</span>otal_pages())
+        * sysctl_overcommit_ratio / <span class="number">100</span>) + total_swap_pages;
 
-    cached = global_page_state<span class="params">(NR_FILE_PAGES)</span> -
+    cached = global_page_state(NR_FILE_PAGES) -
             total_swapcache_pages - i.bufferram;
-    <span class="keyword">if</span> <span class="params">(cached &lt; <span class="number">0</span>)</span>
+    <span class="keyword">if</span> (cached &lt; <span class="number">0</span>)
         cached = <span class="number">0</span>;
 
-    get_vmalloc_info<span class="params">(&amp;vmi)</span>;
+    get_vmalloc_info(&amp;vmi);
 
-    <span class="keyword">for</span> <span class="params">(lru = LRU_BASE; lru &lt; NR_LRU_LISTS; lru++)</span>
-        pages[lru] = global_page_state<span class="params">(NR_LRU_BASE + lru)</span>;
+    <span class="keyword">for</span> (lru = LRU_BASE; lru &lt; NR_LRU_LISTS; lru++)
+        pages[lru] = global_page_state(NR_LRU_BASE + lru);
 
     <span class="comment">/*
      * Tagged format, for easy grepping and expansion.
      */</span>
-    seq_printf<span class="params">(m,
+    seq_printf(m,
         <span class="string">"MemTotal:       %8lu kB\n"</span>
         <span class="string">"MemFree:        %8lu kB\n"</span>
         <span class="string">"Buffers:        %8lu kB\n"</span>
@@ -299,102 +316,23 @@ Cached: <span class="keyword">in</span>-memory cache <span class="keyword">for</
         <span class="string">"Inactive(file): %8lu kB\n"</span>
         <span class="string">"Unevictable:    %8lu kB\n"</span>
         <span class="string">"Mlocked:        %8lu kB\n"</span>
-#ifdef CONFIG_HIGHMEM
-        <span class="string">"HighTotal:      %8lu kB\n"</span>
-        <span class="string">"HighFree:       %8lu kB\n"</span>
-        <span class="string">"LowTotal:       %8lu kB\n"</span>
-        <span class="string">"LowFree:        %8lu kB\n"</span>
-#endif
-#ifndef CONFIG_MMU
-        <span class="string">"MmapCopy:       %8lu kB\n"</span>
-#endif
-        <span class="string">"SwapTotal:      %8lu kB\n"</span>
-        <span class="string">"SwapFree:       %8lu kB\n"</span>
-        <span class="string">"Dirty:          %8lu kB\n"</span>
-        <span class="string">"Writeback:      %8lu kB\n"</span>
-        <span class="string">"AnonPages:      %8lu kB\n"</span>
-        <span class="string">"Mapped:         %8lu kB\n"</span>
-        <span class="string">"Shmem:          %8lu kB\n"</span>
-        <span class="string">"Slab:           %8lu kB\n"</span>
-        <span class="string">"SReclaimable:   %8lu kB\n"</span>
-        <span class="string">"SUnreclaim:     %8lu kB\n"</span>
-        <span class="string">"KernelStack:    %8lu kB\n"</span>
-        <span class="string">"PageTables:     %8lu kB\n"</span>
-#ifdef CONFIG_QUICKLIST
-        <span class="string">"Quicklists:     %8lu kB\n"</span>
-#endif
-        <span class="string">"NFS_Unstable:   %8lu kB\n"</span>
-        <span class="string">"Bounce:         %8lu kB\n"</span>
-        <span class="string">"WritebackTmp:   %8lu kB\n"</span>
-        <span class="string">"CommitLimit:    %8lu kB\n"</span>
-        <span class="string">"Committed_AS:   %8lu kB\n"</span>
-        <span class="string">"VmallocTotal:   %8lu kB\n"</span>
-        <span class="string">"VmallocUsed:    %8lu kB\n"</span>
-        <span class="string">"VmallocChunk:   %8lu kB\n"</span>
-#ifdef CONFIG_MEMORY_FAILURE
-        <span class="string">"HardwareCorrupted: %5lu kB\n"</span>
-#endif
-        ,
-        K<span class="params">(i.totalram)</span>,
-        K<span class="params">(i.freeram)</span>,
-        K<span class="params">(i.bufferram)</span>,
-        K<span class="params">(cached)</span>,
-        K<span class="params">(total_swapcache_pages)</span>,
-        K<span class="params">(pages[LRU_ACTIVE_ANON]   + pages[LRU_ACTIVE_FILE])</span>,
-        K<span class="params">(pages[LRU_INACTIVE_ANON] + pages[LRU_INACTIVE_FILE])</span>,
-        K<span class="params">(pages[LRU_ACTIVE_ANON])</span>,
-        K<span class="params">(pages[LRU_INACTIVE_ANON])</span>,
-        K<span class="params">(pages[LRU_ACTIVE_FILE])</span>,
-        K<span class="params">(pages[LRU_INACTIVE_FILE])</span>,
-        K<span class="params">(pages[LRU_UNEVICTABLE])</span>,
-        K<span class="params">(global_page_state<span class="params">(NR_MLOCK)</span>)</span>,
-#ifdef CONFIG_HIGHMEM
-        K<span class="params">(i.totalhigh)</span>,
-        K<span class="params">(i.freehigh)</span>,
-        K<span class="params">(i.totalram-i.totalhigh)</span>,
-        K<span class="params">(i.freeram-i.freehigh)</span>,
-#endif
-#ifndef CONFIG_MMU
-        K<span class="params">(<span class="params">(unsigned long)</span> atomic_long_read<span class="params">(&amp;mmap_pages_allocated)</span>)</span>,
-#endif
-        K<span class="params">(i.totalswap)</span>,
-        K<span class="params">(i.freeswap)</span>,
-        K<span class="params">(global_page_state<span class="params">(NR_FILE_DIRTY)</span>)</span>,
-        K<span class="params">(global_page_state<span class="params">(NR_WRITEBACK)</span>)</span>,
-        K<span class="params">(global_page_state<span class="params">(NR_ANON_PAGES)</span>)</span>,
-        K<span class="params">(global_page_state<span class="params">(NR_FILE_MAPPED)</span>)</span>,
-        K<span class="params">(global_page_state<span class="params">(NR_SHMEM)</span>)</span>,
-        K<span class="params">(global_page_state<span class="params">(NR_SLAB_RECLAIMABLE)</span> +
-                global_page_state<span class="params">(NR_SLAB_UNRECLAIMABLE)</span>)</span>,
-        K<span class="params">(global_page_state<span class="params">(NR_SLAB_RECLAIMABLE)</span>)</span>,
-        K<span class="params">(global_page_state<span class="params">(NR_SLAB_UNRECLAIMABLE)</span>)</span>,
-        global_page_state<span class="params">(NR_KERNEL_STACK)</span> * THREAD_SIZE / <span class="number">1024</span>,
-        K<span class="params">(global_page_state<span class="params">(NR_PAGETABLE)</span>)</span>,
-#ifdef CONFIG_QUICKLIST
-        K<span class="params">(quicklist_total_size<span class="params">()</span>)</span>,
-#endif
-        K<span class="params">(global_page_state<span class="params">(NR_UNSTABLE_NFS)</span>)</span>,
-        K<span class="params">(global_page_state<span class="params">(NR_BOUNCE)</span>)</span>,
-        K<span class="params">(global_page_state<span class="params">(NR_WRITEBACK_TEMP)</span>)</span>,
-        K<span class="params">(allowed)</span>,
-        K<span class="params">(committed)</span>,
-        <span class="params">(unsigned long)</span>VMALLOC_TOTAL &gt;&gt; <span class="number">10</span>,
-        vmi.used &gt;&gt; <span class="number">10</span>,
-        vmi.largest_chunk &gt;&gt; <span class="number">10</span>
-#ifdef CONFIG_MEMORY_FAILURE
-        ,atomic_long_read<span class="params">(&amp;mce_bad_pages)</span> &lt;&lt; <span class="params">(PAGE_SHIFT - <span class="number">10</span>)</span>
-#endif
-        )</span>;
+......
+        );
 
-    hugetlb_report_meminfo<span class="params">(m)</span>;
+    hugetlb_report_meminfo(m);
 
-    arch_report_meminfo<span class="params">(m)</span>;
+    arch_report_meminfo(m);
 
-    return <span class="number">0</span>;
-<span class="built_in">#</span><span class="literal">undef</span> K
+    <span class="keyword">return</span> <span class="number">0</span>;
+<span class="preprocessor">#<span class="keyword">undef</span> K</span>
 }
-</code></pre><p>从源码中可以看出<br>        “Buffers:      %8lu kB\n”<br>        “Cached:       %8lu kB\n”<br>对应的是<br>        K(i.bufferram),<br>        K(cached),</p>
-<p>i 是 struct sysinfo（定义在 include\linux\kernel.h中），从si_meminfo 和 si_swapinfo 中获取数据。</p>
+</code></pre><p>从源码中可以看出</p>
+<pre><code><span class="string">"Buffers:        <span class="variable">%8lu</span> kB\n"</span>
+<span class="string">"Cached:         <span class="variable">%8lu</span> kB\n"</span>
+</code></pre><p>对应的是</p>
+<pre><code><span class="function"><span class="title">K</span><span class="params">(i.bufferram)</span></span>,
+<span class="function"><span class="title">K</span><span class="params">(cached)</span></span>,
+</code></pre><p>首先看buffers，i 是 struct sysinfo（定义在 include\linux\kernel.h中），从si_meminfo 和 si_swapinfo 中获取数据。</p>
 <pre><code><span class="keyword">struct</span> sysinfo {
     <span class="keyword">long</span> uptime;            <span class="comment">/* Seconds since boot */</span>
     <span class="keyword">unsigned</span> <span class="keyword">long</span> loads[<span class="number">3</span>];        <span class="comment">/* 1, 5, and 15 minute load averages */</span>
@@ -411,7 +349,7 @@ Cached: <span class="keyword">in</span>-memory cache <span class="keyword">for</
     <span class="keyword">unsigned</span> <span class="keyword">int</span> mem_unit;        <span class="comment">/* Memory unit size in bytes */</span>
     <span class="keyword">char</span> _f[<span class="number">20</span>-<span class="number">2</span>*<span class="keyword">sizeof</span>(<span class="keyword">long</span>)-<span class="keyword">sizeof</span>(<span class="keyword">int</span>)];    <span class="comment">/* Padding: libc5 uses this.. */</span>
 };
-</code></pre><p>在mm\page_alloc.c中可以找到 </p>
+</code></pre><p>在mm\page_alloc.c中可以找到：</p>
 <pre><code>void si_meminfo(<span class="keyword">struct</span> sysinfo *<span class="keyword">val</span>)
 {
     <span class="keyword">val</span>-&gt;totalram = totalram_pages;
@@ -422,7 +360,129 @@ Cached: <span class="keyword">in</span>-memory cache <span class="keyword">for</
     <span class="keyword">val</span>-&gt;freehigh = nr_free_highpages<span class="literal">()</span>;
     <span class="keyword">val</span>-&gt;mem_unit = <span class="type">PAGE_SIZE</span>;
 }
-</code></pre><p>cached = global_page_state(NR_FILE_PAGES) - total_swapcache_pages - i.bufferram;</p>
+</code></pre><p>在mm\Swapfile.c中可以找到：</p>
+<pre><code><span class="function"><span class="keyword">void</span> <span class="title">si_swapinfo</span><span class="params">(<span class="keyword">struct</span> sysinfo *val)</span>
+</span>{
+    <span class="keyword">unsigned</span> <span class="keyword">int</span> i;
+    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">nr_t</span>o_be_unused = <span class="number">0</span>;
+
+    spin_lock(&amp;swap_lock);
+    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; nr_swapfiles; i++) {
+        <span class="keyword">if</span> (!(swap_info[i].flags &amp; SWP_USED) ||
+             (swap_info[i].flags &amp; SWP_WRITEOK))
+            <span class="keyword">continue</span>;
+        <span class="keyword">nr_t</span>o_be_unused += swap_info[i].inuse_pages;
+    }
+    val-&gt;freeswap = nr_swap_pages + <span class="keyword">nr_t</span>o_be_unused;
+    val-&gt;totalswap = total_swap_pages + <span class="keyword">nr_t</span>o_be_unused;
+    spin_unlock(&amp;swap_lock);
+}
+</code></pre><p>可以看出 Buffers 只跟 nr_blockdev_pages() 有关系，代码在 fs\Block_dev.c中：</p>
+<pre><code><span class="label">long</span> nr_blockdev_pages(void)
+{
+    <span class="keyword">struct </span><span class="keyword">block_device </span>*<span class="keyword">bdev;
+</span>    long ret = <span class="number">0</span><span class="comment">;</span>
+    spin_lock(&amp;<span class="keyword">bdev_lock);
+</span>    list_for_each_entry(<span class="keyword">bdev, </span>&amp;all_bdevs, <span class="keyword">bd_list) </span>{
+        ret += <span class="keyword">bdev-&gt;bd_inode-&gt;i_mapping-&gt;nrpages;
+</span>    }
+    spin_unlock(&amp;<span class="keyword">bdev_lock);
+</span>    return ret<span class="comment">;</span>
+}
+</code></pre><p>原来Buffers 跟inode关系。</p>
+<p>include\linux\Fs.h有相关结构的定义</p>
+<pre><code><span class="keyword">struct</span> block_device {
+    <span class="keyword">dev_t</span>            bd_dev;  <span class="comment">/* not a kdev_t - it's a search key */</span>
+    <span class="keyword">struct</span> inode *        bd_inode;    <span class="comment">/* will die */</span>
+    <span class="keyword">struct</span> super_block *    bd_super;
+    <span class="keyword">int</span>            bd_openers;
+    <span class="keyword">struct</span> mutex        bd_mutex;    <span class="comment">/* open/close mutex */</span>
+    <span class="keyword">struct</span> list_head    bd_inodes;
+    <span class="keyword">void</span> *            bd_holder;
+    <span class="keyword">int</span>            bd_holders;
+<span class="preprocessor">#ifdef CONFIG_SYSFS</span>
+    <span class="keyword">struct</span> list_head    bd_holder_list;
+<span class="preprocessor">#<span class="keyword">endif</span></span>
+    <span class="keyword">struct</span> block_device *    bd_contains;
+    <span class="keyword">unsigned</span>        bd_block_size;
+    <span class="keyword">struct</span> hd_struct *    bd_part;
+    <span class="comment">/* number of times partitions within this device have been opened. */</span>
+    <span class="keyword">unsigned</span>        bd_part_count;
+    <span class="keyword">int</span>            bd_invalidated;
+    <span class="keyword">struct</span> gendisk *    bd_disk;
+    <span class="keyword">struct</span> list_head    bd_list;
+    <span class="comment">/*
+     * Private data.  You must have bd_claim'ed the block_device
+     * to use this.  <span class="doctag"><span class="keyword">NOTE</span></span>:  bd_claim allows an owner to claim
+     * the same device multiple times, the owner must take special
+     * care to not mess up bd_private for that case.
+     */</span>
+    <span class="keyword">unsigned</span> <span class="keyword">long</span>        bd_private;
+
+    <span class="comment">/* The counter of freeze processes */</span>
+    <span class="keyword">int</span>            bd_fsfreeze_count;
+    <span class="comment">/* Mutex for freeze */</span>
+    <span class="keyword">struct</span> mutex        bd_fsfreeze_mutex;
+};
+
+<span class="keyword">struct</span> inode {
+    <span class="keyword">struct</span> hlist_node    i_hash;
+    <span class="keyword">struct</span> list_head    i_list;        <span class="comment">/* backing dev IO list */</span>
+    <span class="keyword">struct</span> list_head    i_sb_list;
+    <span class="keyword">struct</span> list_head    i_dentry;
+    <span class="keyword">unsigned</span> <span class="keyword">long</span>        i_ino;
+    <span class="keyword">atomic_t</span>        i_count;
+    <span class="keyword">unsigned</span> <span class="keyword">int</span>        i_nlink;
+    <span class="keyword">uid_t</span>            i_uid;
+    <span class="keyword">gid_t</span>            i_gid;
+    <span class="keyword">dev_t</span>            i_rdev;
+    u64            i_version;
+    <span class="keyword">loff_t</span>            i_size;
+......
+    <span class="keyword">void</span>            *i_private; <span class="comment">/* fs or device private pointer */</span>
+};
+
+<span class="keyword">struct</span> address_space {
+    <span class="keyword">struct</span> inode        *host;        <span class="comment">/* owner: inode, block_device */</span>
+    <span class="keyword">struct</span> <span class="keyword">radix_t</span>ree_root    <span class="keyword">page_t</span>ree;    <span class="comment">/* radix tree of all pages */</span>
+    <span class="keyword">spinlock_t</span>        tree_lock;    <span class="comment">/* and lock protecting it */</span>
+    <span class="keyword">unsigned</span> <span class="keyword">int</span>        i_mmap_writable;<span class="comment">/* count VM_SHARED mappings */</span>
+    <span class="keyword">struct</span> <span class="keyword">prio_t</span>ree_root    i_mmap;        <span class="comment">/* tree of private and shared mappings */</span>
+    <span class="keyword">struct</span> list_head    i_mmap_nonlinear;<span class="comment">/*list VM_NONLINEAR mappings */</span>
+    <span class="keyword">spinlock_t</span>        i_mmap_lock;    <span class="comment">/* protect tree, count, list */</span>
+    <span class="keyword">unsigned</span> <span class="keyword">int</span>        truncate_count;    <span class="comment">/* Cover race condition with truncate */</span>
+    <span class="keyword">unsigned</span> <span class="keyword">long</span>        nrpages;    <span class="comment">/* number of total pages */</span>
+    <span class="keyword">pgoff_t</span>            writeback_index;<span class="comment">/* writeback starts here */</span>
+    <span class="keyword">const</span> <span class="keyword">struct</span> address_space_operations *a_ops;    <span class="comment">/* methods */</span>
+    <span class="keyword">unsigned</span> <span class="keyword">long</span>        flags;        <span class="comment">/* error bits/gfp mask */</span>
+    <span class="keyword">struct</span> backing_dev_info *backing_dev_info; <span class="comment">/* device readahead, etc */</span>
+    <span class="keyword">spinlock_t</span>        private_lock;    <span class="comment">/* for use by the address_space */</span>
+    <span class="keyword">struct</span> list_head    private_list;    <span class="comment">/* ditto */</span>
+    <span class="keyword">struct</span> address_space    *assoc_mapping;    <span class="comment">/* ditto */</span>
+    <span class="keyword">struct</span> mutex        unmap_mutex;    <span class="comment">/* to protect unmapping */</span>
+} __attribute__((aligned(<span class="keyword">sizeof</span>(<span class="keyword">long</span>))));
+</code></pre><p>从 nrpages 的注释可以清楚的看出 Buffers是inode在内存中总页数。</p>
+<p>接下来看cached，meminfo_proc_show中计算公式如下：</p>
+<pre><code>cached = global_page_state(NR_FILE_PAGES) - total_swapcache_pages - i.bufferram;
+
+<span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="title">global_page_state</span><span class="params">(<span class="keyword">enum</span> zone_stat_item item)</span>
+</span>{
+    <span class="keyword">long</span> x = atomic_long_read(&amp;vm_stat[item]);
+<span class="preprocessor">#ifdef CONFIG_SMP</span>
+    <span class="keyword">if</span> (x &lt; <span class="number">0</span>)
+        x = <span class="number">0</span>;
+<span class="preprocessor">#<span class="keyword">endif</span></span>
+    <span class="keyword">return</span> x;
+}
+</code></pre><p>vm_stat 可以在 mm/Vmstat.c中找到：</p>
+<pre><code>/<span class="keyword">*</span>
+ <span class="keyword">*</span> Manage combined zone based / global counters
+ <span class="keyword">*</span>
+ <span class="keyword">*</span> vm_stat contains the global counters
+ <span class="keyword">*</span>/
+atomic_long_t vm_stat[NR_VM_ZONE_STAT_ITEMS];
+EXPORT_SYMBOL(vm_stat);
+</code></pre><p>有点抓瞎了，完全看不明白。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -430,13 +490,13 @@ Cached: <span class="keyword">in</span>-memory cache <span class="keyword">for</
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>
+  <a class="article-category-link" href="/categories/Linux/">Linux</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/linux/">linux</a>
+  <span></span> <a href="/tags/Linux/">Linux</a>
   </div>
 
 </div>
@@ -445,7 +505,7 @@ Cached: <span class="keyword">in</span>-memory cache <span class="keyword">for</
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.zhenghongzhi.cn/2015/06/02/buffers-and-cached/" data-title="free中的buffers和cached(1) | 郑鸿志的博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.zhenghongzhi.cn/2015/06/02/buffers-and-cached/" data-title="free中的buffers和cached | 郑鸿志的博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -491,11 +551,15 @@ Cached: <span class="keyword">in</span>-memory cache <span class="keyword">for</
 		<ul>
 		
 		  
-			<li><a href="/categories/linux/" title="linux">linux<sup>1</sup></a></li>
+			<li><a href="/categories/Linux/" title="Linux">Linux<sup>1</sup></a></li>
 		  
 		
 		  
-			<li><a href="/categories/自动化测试/" title="自动化测试">自动化测试<sup>1</sup></a></li>
+			<li><a href="/categories/TestAutomation/" title="TestAutomation">TestAutomation<sup>1</sup></a></li>
+		  
+		
+		  
+		
 		  
 		
 		</ul>
@@ -508,11 +572,15 @@ Cached: <span class="keyword">in</span>-memory cache <span class="keyword">for</
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/自动化测试-webdriver/" title="自动化测试,webdriver">自动化测试,webdriver<sup>1</sup></a></li>
+				<li><a href="/tags/TestAutomation-Webdriver/" title="TestAutomation,Webdriver">TestAutomation,Webdriver<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>1</sup></a></li>
+			
+		
+			
+		
 			
 		
 		</ul>
