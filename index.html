@@ -80,6 +80,118 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2015/06/03/webdriver-textnode/" title="WebDriver如何取标签外的文本" itemprop="url">WebDriver如何取标签外的文本</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
+		
+  <p class="article-time">
+    <time datetime="2015-06-03T04:02:26.000Z" itemprop="datePublished"> 发表于 2015-06-03</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>在我们的自动化测试过程中，总是会碰到各种难搞的问题，比如说我们需要取标签外的文本信息，今天又被问到这个问题，所以重贴旧文。</p>
+<pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"div1"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div1<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话1
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div2<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话2
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div3<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话3
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div4<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话4
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+</code></pre><p>对于上面的HTML，如果我们想获取 “废话1”、“废话2”之类的文字，使用Webdriver 的 findElement是没有办法解决的，必须想起他办法解决。首先，我们了解一个概念，”废话1”这种，在HTML DOM里面叫做 textNode，是可以设置和获取的。</p>
+<p>我们做一个测试页面，将下面的内容保存为 test.htm</p>
+<pre><code><span class="doctype">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd"&gt;</span>
+<span class="tag">&lt;<span class="title">html</span>&gt;</span>
+<span class="tag">&lt;<span class="title">head</span>&gt;</span>
+<span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"Content-Type"</span> <span class="attribute">content</span>=<span class="value">"text/html; charset=gb2312"</span>&gt;</span>
+<span class="tag">&lt;<span class="title">title</span>&gt;</span>测试<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="xml">
+<span class="comment">&lt;!--
+function getTextNodeValue(){
+    var txt='';
+    for (var i=0;i&lt;div1.childNodes.length;i++){
+        if(div1.childNodes[i].nodeType==3){
+                txt += div1.childNodes[i].nodeValue+';'
+        }
+    }
+    alert(txt);
+}
+--&gt;</span>
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">head</span>&gt;</span>
+
+<span class="tag">&lt;<span class="title">body</span> <span class="attribute">onload</span>=<span class="value">"getTextNodeValue()"</span>&gt;</span> 
+<span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"div1"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div1<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话1
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div2<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话2
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div3<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话3
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div4<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话4
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">html</span>&gt;</span>
+</code></pre><p>打开页面后，页面弹出： 废话1 ;废话2 ;废话3 ;废话4 ;我们使用了JS 获取到了textNode上的数据。</p>
+<p>不少同学知道webdriver是可以调用JS的，但是通常都是去执行一个方法，其实webdriver也是可以得到JS 返回值的。</p>
+<pre><code>System.out.println<span class="params">(<span class="params">(<span class="params">(JavascriptExecutor)</span> dr)</span>
+                    .executeScript<span class="params">(<span class="string">"var txt='';for (var i=0;i&lt;div1.childNodes.length;i++)"</span>
+                            + <span class="string">"{if(div1.childNodes[i].nodeType==3){txt += div1.childNodes[i].nodeValue+';'}}"</span>
+                            + <span class="string">"return txt;"</span>)</span>)</span>;
+</code></pre><p>通过上面的脚本我们就可以得到我们想要的数据，秘密就就第4行的 return txt。通过JS的 return ，webdriver可以得到 Boolean、Long、String、List、WebElement类型的数据。</p>
+<p>webdriver不但可以得到JS的返回值，而且也可传递参数给JS，下面的代码就是一个例子：</p>
+<pre><code>System.out.println<span class="params">(<span class="params">(<span class="params">(JavascriptExecutor)</span> dr)</span>
+            .executeScript<span class="params">(<span class="string">"var txt='';for (var i=0;i&lt;arguments[0].childNodes.length;i++)"</span>
+                    + <span class="string">"{if(div1.childNodes[i].nodeType==3){txt += div1.childNodes[i].nodeValue+';'}}"</span>
+                    + <span class="string">"return txt;"</span>,dr.findElement<span class="params">(By.xpath<span class="params">(<span class="string">"//div[1]"</span>)</span>)</span>)</span>)</span>;
+</code></pre><p>div1这个节点，我们通过参数传递给JS，输入参数的具体类型，我们可以参考API文档。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/自动化测试/">自动化测试</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/自动化测试-webdriver/">自动化测试,webdriver</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2015/06/02/buffers-and-cached/" title="free中的buffers和cached(1)" itemprop="url">free中的buffers和cached(1)</a>
   </h1>
   <p class="article-author">By
@@ -93,8 +205,15 @@
 </header>
     <div class="article-content">
         
-        <p>free 中有2个重要的参数 buffers和cached，这2个参数到底是什么意思，百度了各种文章，大多概念混淆、含糊不清，难以得到满意的答案，今天做一个源码探索，期望有所收获。</p>
-<p>从网络资料可以探究到free是procps软件包的一部分，从网上下载procps源码，很容易看出free.c就是free的入口，main函数中meminfo()是关键<br>
+        <p>linux查看系统内存常用命令free中有2个重要的参数buffers和cached：</p>
+<pre><code>                     total       used       free     shared    buffers     cached
+Mem:      <span class="number">16436192</span>   <span class="number">10914412</span>    <span class="number">5521780</span>          0     502256    <span class="number">5795248</span>
+-/+ buffers/cache:    <span class="number">4616908</span>   <span class="number">11819284</span>
+Swap:      <span class="number">4096532</span>        116    <span class="number">4096416</span>
+</code></pre><p>这2个参数到底是什么意思，百度了各种文章，大多概念混淆、含糊不清，难以得到满意的答案，今天做一个源码探索，发现free原来就是获取/proc/meminfo中对应的参数。</p>
+<p>执行 free;cat /proc/meminfo，两边的 buffers、cached完全一致<br>                     total       used       free     shared    buffers     cached<br>        Mem:      16436192   10914716    5521476          0     502256    5795248<br>        -/+ buffers/cache:    4617212   11818980<br>        Swap:      4096532        116    4096416<br>        MemTotal:     16436192 kB<br>        MemFree:       5521468 kB<br>        Buffers:        502256 kB<br>        Cached:        5795248 kB<br>        SwapCached:         12 kB<br>        Active:        6215352 kB<br>        Inactive:      4218000 kB<br>        HighTotal:           0 kB<br>        HighFree:            0 kB<br>        LowTotal:     16436192 kB<br>        LowFree:       5521468 kB<br>        SwapTotal:     4096532 kB<br>        SwapFree:      4096416 kB<br>        Dirty:             108 kB<br>        Writeback:           0 kB<br>        AnonPages:     4135824 kB<br>        Mapped:          42364 kB<br>        Slab:           425984 kB<br>        PageTables:      21056 kB<br>        NFS_Unstable:        0 kB<br>        Bounce:              0 kB<br>        CommitLimit:  12314628 kB<br>        Committed_AS:  8258188 kB<br>        VmallocTotal: 34359738367 kB<br>        VmallocUsed:    265104 kB<br>        VmallocChunk: 34359472931 kB<br>        HugePages_Total:     0<br>        HugePages_Free:      0<br>        HugePages_Rsvd:      0<br>        Hugepagesize:     2048 kB</p>
+<p>不仅仅如此，top、vmstat、uptime等等一堆重要的命令中的数据都来自于/proc下的文件。</p>
+<p>下面就聊聊源码的探索过程。<br>
         
         
         <p class="article-more-link">
@@ -136,56 +255,6 @@
 
 
 
-   
-    
-    <article class="post-expand my" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/05/28/blog/" title="第一个博客" itemprop="url">第一个博客</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
-		
-  <p class="article-time">
-    <time datetime="2015-05-28T09:46:09.000Z" itemprop="datePublished"> 发表于 2015-05-28</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我是郑鸿志，这是我的第一个博客。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
 </div>
       <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
@@ -203,6 +272,10 @@
 			<li><a href="/categories/linux/" title="linux">linux<sup>1</sup></a></li>
 		  
 		
+		  
+			<li><a href="/categories/自动化测试/" title="自动化测试">自动化测试<sup>1</sup></a></li>
+		  
+		
 		</ul>
 </div>
 
@@ -211,6 +284,10 @@
 <div class="tagslist">
 	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/自动化测试-webdriver/" title="自动化测试,webdriver">自动化测试,webdriver<sup>1</sup></a></li>
+			
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
