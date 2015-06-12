@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>free中的buffers和cached | 郑鸿志的博客</title>
+    <title>free中的buffers和cached(1) | 郑鸿志的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="郑鸿志">
@@ -15,15 +15,15 @@
                      total       used       free     shared    buffers     cached
 Mem:      16436192   10914412    5521780          0     502256    5795248">
 <meta property="og:type" content="article">
-<meta property="og:title" content="free中的buffers和cached">
+<meta property="og:title" content="free中的buffers和cached(1)">
 <meta property="og:url" content="http://www.zhenghongzhi.cn/2015/06/02/buffers-and-cached/index.html">
 <meta property="og:site_name" content="郑鸿志的博客">
 <meta property="og:description" content="linux查看系统内存常用命令free中有2个重要的参数buffers和cached：
                      total       used       free     shared    buffers     cached
 Mem:      16436192   10914412    5521780          0     502256    5795248">
-<meta property="og:updated_time" content="2015-06-11T13:15:57.855Z">
+<meta property="og:updated_time" content="2015-06-12T03:29:20.357Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="free中的buffers和cached">
+<meta name="twitter:title" content="free中的buffers和cached(1)">
 <meta name="twitter:description" content="linux查看系统内存常用命令free中有2个重要的参数buffers和cached：
                      total       used       free     shared    buffers     cached
 Mem:      16436192   10914412    5521780          0     502256    5795248">
@@ -85,7 +85,7 @@ Mem:      16436192   10914412    5521780          0     502256    5795248">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/06/02/buffers-and-cached/" title="free中的buffers和cached" itemprop="url">free中的buffers和cached</a>
+      <a href="/2015/06/02/buffers-and-cached/" title="free中的buffers和cached(1)" itemprop="url">free中的buffers和cached(1)</a>
   </h1>
   <p class="article-author">By
        
@@ -390,7 +390,7 @@ Cached: <span class="keyword">in</span>-memory cache <span class="keyword">for</
     spin_unlock(&amp;<span class="keyword">bdev_lock);
 </span>    return ret<span class="comment">;</span>
 }
-</code></pre><p>原来Buffers 跟inode关系。</p>
+</code></pre><p>原来Buffers跟inode有关系。</p>
 <p>include\linux\Fs.h有相关结构的定义</p>
 <pre><code><span class="keyword">struct</span> block_device {
     <span class="keyword">dev_t</span>            bd_dev;  <span class="comment">/* not a kdev_t - it's a search key */</span>
@@ -475,15 +475,27 @@ Cached: <span class="keyword">in</span>-memory cache <span class="keyword">for</
 <span class="preprocessor">#<span class="keyword">endif</span></span>
     <span class="keyword">return</span> x;
 }
-</code></pre><p>vm_stat 可以在 mm/Vmstat.c中找到：</p>
-<pre><code>/<span class="keyword">*</span>
- <span class="keyword">*</span> Manage combined zone based / global counters
- <span class="keyword">*</span>
- <span class="keyword">*</span> vm_stat contains the global counters
- <span class="keyword">*</span>/
-atomic_long_t vm_stat[NR_VM_ZONE_STAT_ITEMS];
-EXPORT_SYMBOL(vm_stat);
-</code></pre><p>有点抓瞎了，完全看不明白。</p>
+</code></pre><p>vm_stat 可以在 mm/Vmstat.h中找到：</p>
+<pre><code><span class="value">static</span> <span class="value">inline</span> void __<span class="function">inc_zone_state</span>(struct zone *zone, enum zone_stat_item item)
+{
+    <span class="function">atomic_long_inc</span>(&amp;zone-&gt;vm_stat<span class="attr_selector">[item]</span>);
+    <span class="function">atomic_long_inc</span>(&amp;vm_stat<span class="attr_selector">[item]</span>);
+}
+
+<span class="value">static</span> <span class="value">inline</span> void <span class="function">zone_page_state_add</span>(long x, struct zone *zone,
+                 enum zone_stat_item item)
+{
+    <span class="function">atomic_long_add</span>(x, &amp;zone-&gt;vm_stat<span class="attr_selector">[item]</span>);
+    <span class="function">atomic_long_add</span>(x, &amp;vm_stat<span class="attr_selector">[item]</span>);
+}
+
+<span class="value">static</span> <span class="value">inline</span> void __<span class="function">dec_zone_state</span>(struct zone *zone, enum zone_stat_item item)
+{
+    <span class="function">atomic_long_dec</span>(&amp;zone-&gt;vm_stat<span class="attr_selector">[item]</span>);
+    <span class="function">atomic_long_dec</span>(&amp;vm_stat<span class="attr_selector">[item]</span>);
+}
+</code></pre><p>也就是说zone-&gt;vm_stat的变化会引起vm_stat的变化。</p>
+<p>今天跟踪到这里，得空继续探索。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -506,7 +518,7 @@ EXPORT_SYMBOL(vm_stat);
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.zhenghongzhi.cn/2015/06/02/buffers-and-cached/" data-title="free中的buffers和cached | 郑鸿志的博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.zhenghongzhi.cn/2015/06/02/buffers-and-cached/" data-title="free中的buffers和cached(1) | 郑鸿志的博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
