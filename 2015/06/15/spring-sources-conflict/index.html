@@ -23,7 +23,7 @@ Cause: com.ibatis.sqlmap.client.SqlMapException: There is already a statement na
 Cause: com.ibatis.sqlmap.client.SqlMapException: There is already a statement named XXXX in this SqlMap.
 增加调试参数 -verbose:class 发现报错的相关Jar出现2个不同版本。
 为什么会带来这样的问题：1、测试项目为了调试方便依赖了一堆其他项">
-<meta property="og:updated_time" content="2015-06-18T09:31:45.409Z">
+<meta property="og:updated_time" content="2015-06-18T09:35:58.889Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jar版本不一致造成Spring加载资源文件冲突">
 <meta name="twitter:description" content="今天调试一个Java测试项目时出现报错：
@@ -111,7 +111,7 @@ Cause: com.ibatis.sqlmap.client.SqlMapException: There is already a statement na
 		<p>今天调试一个Java测试项目时出现报错：</p>
 <pre><code>Cause: com<span class="class">.ibatis</span><span class="class">.sqlmap</span><span class="class">.client</span><span class="class">.SqlMapException</span>: There is already <span class="tag">a</span> statement named XXXX <span class="keyword">in</span> this SqlMap.
 </code></pre><p>增加调试参数 -verbose:class 发现报错的相关Jar出现2个不同版本。</p>
-<p>为什么会带来这样的问题：<br>1、测试项目为了调试方便依赖了一堆其他项目<br>2、项目全部依赖ivy<br>3、某个项目的ivy相关Jar做了升级，其他项目未升级<br>4、加载ibatis的xml使用了classpath<em>，不同的版本的jar，Spring会当作2个不同的资源来处理<br>Failed to parse mapping resource: URL [jar:file:/D:/Local_Repository/ivy-cache/**</em>/<strong><em>/jars/</em></strong>-1.5.0.10.jar!/<strong><em>/</em></strong>/<em>*</em>.xml]; </p>
+<p>为什么会带来这样的问题：<br>1、测试项目为了调试方便依赖了一堆其他项目<br>2、项目全部依赖ivy<br>3、某个项目的ivy相关Jar做了升级，其他项目未升级<br>4、加载ibatis的xml使用了classpath*，不同的版本的jar，Spring会当作2个不同的资源来处理<br>Failed to parse mapping resource: URL [jar:file:/D:/Local_Repository/ivy-cache/xxx/xxx/jars/xxx-1.5.0.10.jar!/xxx/xxx/xxx.xml]; </p>
 <p>解决办法：<br>1、项目的ivy使用了 rev=”latest.integration”，依赖的全部项目都要做Resolve。<br>2、使用ivy的 Show in Reverse Dependency Explorer 中的 Show all projects in workspace 功能检查jar的冲突</p>
   
 	</div>
