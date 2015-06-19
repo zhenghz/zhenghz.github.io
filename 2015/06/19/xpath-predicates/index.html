@@ -4,35 +4,43 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>WebDriver如何取标签外的文本 | 郑鸿志的博客</title>
+    <title>利用xpath的谓语做精确定位 | 郑鸿志的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="郑鸿志">
     
 
     
-    <meta name="description" content="在我们的自动化测试过程中，总是会碰到各种难搞的问题，比如说我们需要取标签外的文本信息，今天又被问到这个问题，所以重贴旧文。
-&amp;lt;div id=&quot;div1&quot;&amp;gt;
-    &amp;lt;span name=&quot;p1&quot;&amp;gt;div1&amp;lt;/span&amp;gt;废话1
-    &amp;lt;span name=&quot;p1&quot;&amp;gt;div2&amp;lt;/span&amp;gt;废话2
-    &amp;lt;span name=&quot;p1&quot;">
+    <meta name="description" content="今天遇到个奇怪的问题，webdriver利用xpath定位，总是定位不到。
+
+想用 //ul[@id = ‘LM_SYSFD_UL’]/li/span 定位到第一个圈圈中的元素，结果总是找到第二个元素。
+用chorme的控制台查找元素，发现定位到2个元素，太可爱了。
+
+猜测webdriver大概是默认选择最后一个元素。既然存在这样的问题，那么为了精确定位到元素，就需要对xpath加点料。
+//ul">
 <meta property="og:type" content="article">
-<meta property="og:title" content="WebDriver如何取标签外的文本">
-<meta property="og:url" content="http://www.zhenghongzhi.cn/2015/06/03/webdriver-textnode/index.html">
+<meta property="og:title" content="利用xpath的谓语做精确定位">
+<meta property="og:url" content="http://www.zhenghongzhi.cn/2015/06/19/xpath-predicates/index.html">
 <meta property="og:site_name" content="郑鸿志的博客">
-<meta property="og:description" content="在我们的自动化测试过程中，总是会碰到各种难搞的问题，比如说我们需要取标签外的文本信息，今天又被问到这个问题，所以重贴旧文。
-&amp;lt;div id=&quot;div1&quot;&amp;gt;
-    &amp;lt;span name=&quot;p1&quot;&amp;gt;div1&amp;lt;/span&amp;gt;废话1
-    &amp;lt;span name=&quot;p1&quot;&amp;gt;div2&amp;lt;/span&amp;gt;废话2
-    &amp;lt;span name=&quot;p1&quot;">
-<meta property="og:updated_time" content="2015-06-18T09:47:58.075Z">
+<meta property="og:description" content="今天遇到个奇怪的问题，webdriver利用xpath定位，总是定位不到。
+
+想用 //ul[@id = ‘LM_SYSFD_UL’]/li/span 定位到第一个圈圈中的元素，结果总是找到第二个元素。
+用chorme的控制台查找元素，发现定位到2个元素，太可爱了。
+
+猜测webdriver大概是默认选择最后一个元素。既然存在这样的问题，那么为了精确定位到元素，就需要对xpath加点料。
+//ul">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150619001.png">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150619002.png">
+<meta property="og:updated_time" content="2015-06-19T09:53:50.819Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WebDriver如何取标签外的文本">
-<meta name="twitter:description" content="在我们的自动化测试过程中，总是会碰到各种难搞的问题，比如说我们需要取标签外的文本信息，今天又被问到这个问题，所以重贴旧文。
-&amp;lt;div id=&quot;div1&quot;&amp;gt;
-    &amp;lt;span name=&quot;p1&quot;&amp;gt;div1&amp;lt;/span&amp;gt;废话1
-    &amp;lt;span name=&quot;p1&quot;&amp;gt;div2&amp;lt;/span&amp;gt;废话2
-    &amp;lt;span name=&quot;p1&quot;">
+<meta name="twitter:title" content="利用xpath的谓语做精确定位">
+<meta name="twitter:description" content="今天遇到个奇怪的问题，webdriver利用xpath定位，总是定位不到。
+
+想用 //ul[@id = ‘LM_SYSFD_UL’]/li/span 定位到第一个圈圈中的元素，结果总是找到第二个元素。
+用chorme的控制台查找元素，发现定位到2个元素，太可爱了。
+
+猜测webdriver大概是默认选择最后一个元素。既然存在这样的问题，那么为了精确定位到元素，就需要对xpath加点料。
+//ul">
 
     
     <link rel="alternative" href="/atom.xml" title="郑鸿志的博客" type="application/atom+xml">
@@ -91,14 +99,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/06/03/webdriver-textnode/" title="WebDriver如何取标签外的文本" itemprop="url">WebDriver如何取标签外的文本</a>
+      <a href="/2015/06/19/xpath-predicates/" title="利用xpath的谓语做精确定位" itemprop="url">利用xpath的谓语做精确定位</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
 		
   <p class="article-time">
-    <time datetime="2015-06-03T04:02:26.000Z" itemprop="datePublished"> 发表于 2015-06-03</time>
+    <time datetime="2015-06-19T09:42:21.000Z" itemprop="datePublished"> 发表于 2015-06-19</time>
     
   </p>
 </header>
@@ -111,58 +119,16 @@
 		
 		</div>
 		
-		<p>在我们的自动化测试过程中，总是会碰到各种难搞的问题，比如说我们需要取标签外的文本信息，今天又被问到这个问题，所以重贴旧文。</p>
-<pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"div1"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div1<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话1
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div2<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话2
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div3<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话3
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div4<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话4
-<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-</code></pre><p>对于上面的HTML，如果我们想获取 “废话1”、“废话2”之类的文字，使用Webdriver 的 findElement是没有办法解决的，必须想起他办法解决。首先，我们了解一个概念，”废话1”这种，在HTML DOM里面叫做 textNode，是可以设置和获取的。<br><a id="more"></a><br>我们做一个测试页面，将下面的内容保存为 test.htm</p>
-<pre><code><span class="doctype">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd"&gt;</span>
-<span class="tag">&lt;<span class="title">html</span>&gt;</span>
-<span class="tag">&lt;<span class="title">head</span>&gt;</span>
-<span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"Content-Type"</span> <span class="attribute">content</span>=<span class="value">"text/html; charset=gb2312"</span>&gt;</span>
-<span class="tag">&lt;<span class="title">title</span>&gt;</span>测试<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
-
-<span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="xml">
-<span class="comment">&lt;!--
-function getTextNodeValue(){
-    var txt='';
-    for (var i=0;i&lt;div1.childNodes.length;i++){
-        if(div1.childNodes[i].nodeType==3){
-                txt += div1.childNodes[i].nodeValue+';'
-        }
-    }
-    alert(txt);
-}
---&gt;</span>
-</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">head</span>&gt;</span>
-
-<span class="tag">&lt;<span class="title">body</span> <span class="attribute">onload</span>=<span class="value">"getTextNodeValue()"</span>&gt;</span> 
-<span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"div1"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div1<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话1
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div2<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话2
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div3<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话3
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div4<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话4
-<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">body</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">html</span>&gt;</span>
-</code></pre><p>打开页面后，页面弹出： 废话1 ;废话2 ;废话3 ;废话4 ;我们使用了JS 获取到了textNode上的数据。</p>
-<p>不少同学知道webdriver是可以调用JS的，但是通常都是去执行一个方法，其实webdriver也是可以得到JS 返回值的。</p>
-<pre><code>System.out.println<span class="params">(<span class="params">(<span class="params">(JavascriptExecutor)</span> dr)</span>
-                    .executeScript<span class="params">(<span class="string">"var txt='';for (var i=0;i&lt;div1.childNodes.length;i++)"</span>
-                            + <span class="string">"{if(div1.childNodes[i].nodeType==3){txt += div1.childNodes[i].nodeValue+';'}}"</span>
-                            + <span class="string">"return txt;"</span>)</span>)</span>;
-</code></pre><p>通过上面的脚本我们就可以得到我们想要的数据，秘密就就第4行的 return txt。通过JS的 return ，webdriver可以得到 Boolean、Long、String、List、WebElement类型的数据。</p>
-<p>webdriver不但可以得到JS的返回值，而且也可传递参数给JS，下面的代码就是一个例子：</p>
-<pre><code>System.out.println<span class="params">(<span class="params">(<span class="params">(JavascriptExecutor)</span> dr)</span>
-            .executeScript<span class="params">(<span class="string">"var txt='';for (var i=0;i&lt;arguments[0].childNodes.length;i++)"</span>
-                    + <span class="string">"{if(div1.childNodes[i].nodeType==3){txt += div1.childNodes[i].nodeValue+';'}}"</span>
-                    + <span class="string">"return txt;"</span>,dr.findElement<span class="params">(By.xpath<span class="params">(<span class="string">"//div[1]"</span>)</span>)</span>)</span>)</span>;
-</code></pre><p>div1这个节点，我们通过参数传递给JS，输入参数的具体类型，我们可以参考API文档。</p>
+		<p>今天遇到个奇怪的问题，webdriver利用xpath定位，总是定位不到。</p>
+<p><img src="/images/20150619001.png" alt="网页原文"></p>
+<p>想用 //ul[@id = ‘LM_SYSFD_UL’]/li/span 定位到第一个圈圈中的元素，结果总是找到第二个元素。</p>
+<p>用chorme的控制台查找元素，发现定位到2个元素，太可爱了。</p>
+<p><img src="/images/20150619002.png" alt="网页原文"></p>
+<p>猜测webdriver大概是默认选择最后一个元素。既然存在这样的问题，那么为了精确定位到元素，就需要对xpath加点料。</p>
+<pre><code>//<span class="atom">ul</span>[@<span class="atom">id</span>=<span class="string">'LM_SYSFD_UL'</span>]/<span class="atom">li</span>[.//<span class="atom">span</span>[<span class="atom">text</span>()=<span class="string">'收件箱'</span>]]/<span class="atom">span</span>
+</code></pre><p>利用xpath的谓语功能，先精确定位li，然后再定位到span。</p>
+<p>通常我们看到的xpath谓语，不是属性就是函数，其实谓语也可以是一个子节点的xpath，类似与css selector的has语法。</p>
+<p>另外还需要说的是 .// 这个用法，它表示当前节点的子孙节点，如果用 // 那就完全变味了，表示的是根节点下的某个子孙节点。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -185,7 +151,7 @@ function getTextNodeValue(){
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.zhenghongzhi.cn/2015/06/03/webdriver-textnode/" data-title="WebDriver如何取标签外的文本 | 郑鸿志的博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.zhenghongzhi.cn/2015/06/19/xpath-predicates/" data-title="利用xpath的谓语做精确定位 | 郑鸿志的博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -198,19 +164,11 @@ function getTextNodeValue(){
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/06/15/spring-sources-conflict/" title="Jar版本不一致造成Spring加载资源文件冲突">
-  <strong>上一篇：</strong><br/>
-  <span>
-  Jar版本不一致造成Spring加载资源文件冲突</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/06/02/buffers-and-cached/"  title="free中的buffers和cached(1)">
+<a href="/2015/06/15/spring-sources-conflict/"  title="Jar版本不一致造成Spring加载资源文件冲突">
  <strong>下一篇：</strong><br/> 
- <span>free中的buffers和cached(1)
+ <span>Jar版本不一致造成Spring加载资源文件冲突
 </span>
 </a>
 </div>
