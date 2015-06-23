@@ -31,7 +31,7 @@
 //ul">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150619001.png">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150619002.png">
-<meta property="og:updated_time" content="2015-06-19T09:53:50.819Z">
+<meta property="og:updated_time" content="2015-06-23T09:54:31.416Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用xpath的谓语做精确定位">
 <meta name="twitter:description" content="今天遇到个奇怪的问题，webdriver利用xpath定位，总是定位不到。
@@ -123,7 +123,7 @@
 <p><img src="/images/20150619001.png" alt="网页原文"></p>
 <p>想用 //ul[@id = ‘LM_SYSFD_UL’]/li/span 定位到第一个圈圈中的元素，结果总是找到第二个元素。</p>
 <p>用chorme的控制台查找元素，发现定位到2个元素，太可爱了。</p>
-<p><img src="/images/20150619002.png" alt="网页原文"></p>
+<p><img src="/images/20150619002.png" alt="控制台输出"></p>
 <p>猜测webdriver大概是默认选择最后一个元素。既然存在这样的问题，那么为了精确定位到元素，就需要对xpath加点料。</p>
 <pre><code>//<span class="atom">ul</span>[@<span class="atom">id</span>=<span class="string">'LM_SYSFD_UL'</span>]/<span class="atom">li</span>[.//<span class="atom">span</span>[<span class="atom">text</span>()=<span class="string">'收件箱'</span>]]/<span class="atom">span</span>
 </code></pre><p>利用xpath的谓语功能，先精确定位li，然后再定位到span。</p>
@@ -164,6 +164,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2015/06/23/file.encoding-hash/" title="file.encoding对hash造成的影响">
+  <strong>上一篇：</strong><br/>
+  <span>
+  file.encoding对hash造成的影响</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2015/06/15/spring-sources-conflict/"  title="Jar版本不一致造成Spring加载资源文件冲突">
@@ -197,7 +205,7 @@
 		<ul>
 		
 		  
-			<li><a href="/categories/TestAutomation/" title="TestAutomation">TestAutomation<sup>3</sup></a></li>
+			<li><a href="/categories/TestAutomation/" title="TestAutomation">TestAutomation<sup>4</sup></a></li>
 		  
 		
 		  
@@ -214,11 +222,15 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/Webdriver/" title="Webdriver">Webdriver<sup>2</sup></a></li>
+				<li><a href="/tags/TestAutomation/" title="TestAutomation">TestAutomation<sup>3</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/TestAutomation/" title="TestAutomation">TestAutomation<sup>2</sup></a></li>
+				<li><a href="/tags/Java/" title="Java">Java<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Webdriver/" title="Webdriver">Webdriver<sup>2</sup></a></li>
 			
 		
 			
@@ -227,10 +239,6 @@
 		
 			
 				<li><a href="/tags/Spring/" title="Spring">Spring<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Java/" title="Java">Java<sup>1</sup></a></li>
 			
 		
 			
