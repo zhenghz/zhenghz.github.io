@@ -18,7 +18,7 @@
 <meta property="og:site_name" content="郑鸿志的博客">
 <meta property="og:description" content="今天同事遇到一个奇怪的问题，Testng测试代码在本地和虚拟机的eclipse上执行没有问题，在jenkins上执行报md5校验错误。从日志可以看出，测试代码中需要做hash的字符串中有中文，初步判断跟字符编码有关系。调用md5方法的入参是String，跟踪代码发现，String需要转换为byte[]，在转byte[]的时候，没有指定字符集则使用默认字符集，默认的字符集来自系统属性file.enc">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150623001.png">
-<meta property="og:updated_time" content="2015-06-23T10:07:19.329Z">
+<meta property="og:updated_time" content="2015-06-23T10:11:00.212Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="file.encoding对hash造成的影响">
 <meta name="twitter:description" content="今天同事遇到一个奇怪的问题，Testng测试代码在本地和虚拟机的eclipse上执行没有问题，在jenkins上执行报md5校验错误。从日志可以看出，测试代码中需要做hash的字符串中有中文，初步判断跟字符编码有关系。调用md5方法的入参是String，跟踪代码发现，String需要转换为byte[]，在转byte[]的时候，没有指定字符集则使用默认字符集，默认的字符集来自系统属性file.enc">
@@ -103,7 +103,7 @@
 		<p>今天同事遇到一个奇怪的问题，Testng测试代码在本地和虚拟机的eclipse上执行没有问题，在jenkins上执行报md5校验错误。从日志可以看出，测试代码中需要做hash的字符串中有中文，初步判断跟字符编码有关系。调用md5方法的入参是String，跟踪代码发现，String需要转换为byte[]，在转byte[]的时候，没有指定字符集则使用默认字符集，默认的字符集来自系统属性file.encoding：</p>
 <p><img src="/images/20150623001.png" alt="java.nio.charset.Charset"></p>
 <p>通过在ant加输出日志，发现jenkins上执行时， file.encoding属性为GBK，而通过visualvm检查本地eclipse执行的程序，file.encoding属性为UTF-8，JVM arguments页可以看到-Dfile.encoding=UTF-8，也就是说eclipse跟据我们项目的编码自动加了参数。</p>
-<p>根据以上分析，有2种解决方案：<br>1、在ant执行tesgng中加入参数 <sysproperty key="file.encoding" value="UTF-8"><br>2、在hash的时候传入正确编码的byte[]，而不是String。</sysproperty></p>
+<p>根据以上分析，有2种解决方案：<br>1、在ant执行tesgng中加入参数 &lt;sysproperty key=”file.encoding” value=”UTF-8” /&gt;<br>2、在hash的时候传入正确编码的byte[]，而不是String。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
