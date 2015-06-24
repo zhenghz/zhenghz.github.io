@@ -4,43 +4,40 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>利用xpath的谓语做精确定位 | 郑鸿志的博客</title>
+    <title>WebDriver使用xpath的谓语做精确定位 | 郑鸿志的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="郑鸿志">
     
 
     
-    <meta name="description" content="今天遇到个奇怪的问题，webdriver利用xpath定位，总是定位不到。
+    <meta name="description" content="今天遇到个奇怪的问题，webdriver使用xpath定位，总是定位不到。
 
 想用 //ul[@id = ‘LM_SYSFD_UL’]/li/span 定位到第一个圈圈中的元素，结果总是找到第二个元素。
 用chorme的控制台查找元素，发现定位到2个元素，太可爱了。
 
-猜测webdriver大概是默认选择最后一个元素。既然存在这样的问题，那么为了精确定位到元素，就需要对xpath加点料。
-//ul">
+猜测webdriver大概是默认选择最后一个元素。既然存在这样的问题，那么就需要跟精确的办法来定位元素，我们给xpath加点料：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="利用xpath的谓语做精确定位">
+<meta property="og:title" content="WebDriver使用xpath的谓语做精确定位">
 <meta property="og:url" content="http://www.zhenghongzhi.cn/2015/06/19/xpath-predicates/index.html">
 <meta property="og:site_name" content="郑鸿志的博客">
-<meta property="og:description" content="今天遇到个奇怪的问题，webdriver利用xpath定位，总是定位不到。
+<meta property="og:description" content="今天遇到个奇怪的问题，webdriver使用xpath定位，总是定位不到。
 
 想用 //ul[@id = ‘LM_SYSFD_UL’]/li/span 定位到第一个圈圈中的元素，结果总是找到第二个元素。
 用chorme的控制台查找元素，发现定位到2个元素，太可爱了。
 
-猜测webdriver大概是默认选择最后一个元素。既然存在这样的问题，那么为了精确定位到元素，就需要对xpath加点料。
-//ul">
+猜测webdriver大概是默认选择最后一个元素。既然存在这样的问题，那么就需要跟精确的办法来定位元素，我们给xpath加点料：">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150619001.png">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150619002.png">
-<meta property="og:updated_time" content="2015-06-23T09:54:31.416Z">
+<meta property="og:updated_time" content="2015-06-24T03:24:59.467Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="利用xpath的谓语做精确定位">
-<meta name="twitter:description" content="今天遇到个奇怪的问题，webdriver利用xpath定位，总是定位不到。
+<meta name="twitter:title" content="WebDriver使用xpath的谓语做精确定位">
+<meta name="twitter:description" content="今天遇到个奇怪的问题，webdriver使用xpath定位，总是定位不到。
 
 想用 //ul[@id = ‘LM_SYSFD_UL’]/li/span 定位到第一个圈圈中的元素，结果总是找到第二个元素。
 用chorme的控制台查找元素，发现定位到2个元素，太可爱了。
 
-猜测webdriver大概是默认选择最后一个元素。既然存在这样的问题，那么为了精确定位到元素，就需要对xpath加点料。
-//ul">
+猜测webdriver大概是默认选择最后一个元素。既然存在这样的问题，那么就需要跟精确的办法来定位元素，我们给xpath加点料：">
 
     
     <link rel="alternative" href="/atom.xml" title="郑鸿志的博客" type="application/atom+xml">
@@ -99,7 +96,7 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/06/19/xpath-predicates/" title="利用xpath的谓语做精确定位" itemprop="url">利用xpath的谓语做精确定位</a>
+      <a href="/2015/06/19/xpath-predicates/" title="WebDriver使用xpath的谓语做精确定位" itemprop="url">WebDriver使用xpath的谓语做精确定位</a>
   </h1>
   <p class="article-author">By
        
@@ -119,14 +116,14 @@
 		
 		</div>
 		
-		<p>今天遇到个奇怪的问题，webdriver利用xpath定位，总是定位不到。</p>
+		<p>今天遇到个奇怪的问题，webdriver使用xpath定位，总是定位不到。</p>
 <p><img src="/images/20150619001.png" alt="网页原文"></p>
 <p>想用 //ul[@id = ‘LM_SYSFD_UL’]/li/span 定位到第一个圈圈中的元素，结果总是找到第二个元素。</p>
 <p>用chorme的控制台查找元素，发现定位到2个元素，太可爱了。</p>
 <p><img src="/images/20150619002.png" alt="控制台输出"></p>
-<p>猜测webdriver大概是默认选择最后一个元素。既然存在这样的问题，那么为了精确定位到元素，就需要对xpath加点料。</p>
+<p>猜测webdriver大概是默认选择最后一个元素。既然存在这样的问题，那么就需要跟精确的办法来定位元素，我们给xpath加点料：</p>
 <pre><code>//<span class="atom">ul</span>[@<span class="atom">id</span>=<span class="string">'LM_SYSFD_UL'</span>]/<span class="atom">li</span>[.//<span class="atom">span</span>[<span class="atom">text</span>()=<span class="string">'收件箱'</span>]]/<span class="atom">span</span>
-</code></pre><p>利用xpath的谓语功能，先精确定位li，然后再定位到span。</p>
+</code></pre><p>使用xpath的谓语功能，先精确定位li，然后再定位到span。</p>
 <p>通常我们看到的xpath谓语，不是属性就是函数，其实谓语也可以是一个子节点的xpath，类似与css selector的has语法。</p>
 <p>另外还需要说的是 .// 这个用法，它表示当前节点的子孙节点，如果用 // 那就完全变味了，表示的是根节点下的某个子孙节点。</p>
   
@@ -151,7 +148,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.zhenghongzhi.cn/2015/06/19/xpath-predicates/" data-title="利用xpath的谓语做精确定位 | 郑鸿志的博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.zhenghongzhi.cn/2015/06/19/xpath-predicates/" data-title="WebDriver使用xpath的谓语做精确定位 | 郑鸿志的博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
