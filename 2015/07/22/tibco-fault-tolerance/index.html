@@ -4,24 +4,31 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>file.encoding对hash造成的影响 | 郑鸿志的博客</title>
+    <title>TIBCO容错研究(1) | 郑鸿志的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="郑鸿志">
     
 
     
-    <meta name="description" content="今天同事遇到一个奇怪的问题，Testng测试代码在本地和虚拟机的eclipse上执行没有问题，在jenkins上执行报md5校验错误。从日志可以看出，测试代码中需要做hash的字符串中有中文，初步判断跟字符编码有关系。调用md5方法的入参是String，跟踪代码发现，String需要转换为byte[]，在转byte[]的时候，没有指定字符集则使用默认字符集，默认的字符集来自系统属性file.enc">
+    <meta name="description" content="我司使用TIBCO做为JMS中间件，最近需要做应用的JMS相关容错测试，因此对TIBCO的容错性做了粗浅的研究。
+TIBCO提供了主备模式的容错设计，通过配置一对服务器（一主一备）进行容错。正常情况下，主服务器接受客户端的连接和传递消息，一旦主服务器出现故障，备份服务器变为主服务器继续工作，原来的主服务器恢复后，变为备份服务器。
+架构上可分为：共享状态模式、非共享状态模式。非共享状态模式在故障切换">
 <meta property="og:type" content="article">
-<meta property="og:title" content="file.encoding对hash造成的影响">
-<meta property="og:url" content="http://www.zhenghongzhi.cn/2015/06/23/file.encoding-hash/index.html">
+<meta property="og:title" content="TIBCO容错研究(1)">
+<meta property="og:url" content="http://www.zhenghongzhi.cn/2015/07/22/tibco-fault-tolerance/index.html">
 <meta property="og:site_name" content="郑鸿志的博客">
-<meta property="og:description" content="今天同事遇到一个奇怪的问题，Testng测试代码在本地和虚拟机的eclipse上执行没有问题，在jenkins上执行报md5校验错误。从日志可以看出，测试代码中需要做hash的字符串中有中文，初步判断跟字符编码有关系。调用md5方法的入参是String，跟踪代码发现，String需要转换为byte[]，在转byte[]的时候，没有指定字符集则使用默认字符集，默认的字符集来自系统属性file.enc">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150623001.png">
-<meta property="og:updated_time" content="2015-07-22T02:29:44.423Z">
+<meta property="og:description" content="我司使用TIBCO做为JMS中间件，最近需要做应用的JMS相关容错测试，因此对TIBCO的容错性做了粗浅的研究。
+TIBCO提供了主备模式的容错设计，通过配置一对服务器（一主一备）进行容错。正常情况下，主服务器接受客户端的连接和传递消息，一旦主服务器出现故障，备份服务器变为主服务器继续工作，原来的主服务器恢复后，变为备份服务器。
+架构上可分为：共享状态模式、非共享状态模式。非共享状态模式在故障切换">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/2015072201.png">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/2015072202.png">
+<meta property="og:updated_time" content="2015-07-22T02:31:52.259Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="file.encoding对hash造成的影响">
-<meta name="twitter:description" content="今天同事遇到一个奇怪的问题，Testng测试代码在本地和虚拟机的eclipse上执行没有问题，在jenkins上执行报md5校验错误。从日志可以看出，测试代码中需要做hash的字符串中有中文，初步判断跟字符编码有关系。调用md5方法的入参是String，跟踪代码发现，String需要转换为byte[]，在转byte[]的时候，没有指定字符集则使用默认字符集，默认的字符集来自系统属性file.enc">
+<meta name="twitter:title" content="TIBCO容错研究(1)">
+<meta name="twitter:description" content="我司使用TIBCO做为JMS中间件，最近需要做应用的JMS相关容错测试，因此对TIBCO的容错性做了粗浅的研究。
+TIBCO提供了主备模式的容错设计，通过配置一对服务器（一主一备）进行容错。正常情况下，主服务器接受客户端的连接和传递消息，一旦主服务器出现故障，备份服务器变为主服务器继续工作，原来的主服务器恢复后，变为备份服务器。
+架构上可分为：共享状态模式、非共享状态模式。非共享状态模式在故障切换">
 
     
     <link rel="alternative" href="/atom.xml" title="郑鸿志的博客" type="application/atom+xml">
@@ -80,14 +87,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/06/23/file.encoding-hash/" title="file.encoding对hash造成的影响" itemprop="url">file.encoding对hash造成的影响</a>
+      <a href="/2015/07/22/tibco-fault-tolerance/" title="TIBCO容错研究(1)" itemprop="url">TIBCO容错研究(1)</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
 		
   <p class="article-time">
-    <time datetime="2015-06-23T09:46:02.000Z" itemprop="datePublished"> 发表于 2015-06-23</time>
+    <time datetime="2015-07-22T02:08:55.000Z" itemprop="datePublished"> 发表于 2015-07-22</time>
     
   </p>
 </header>
@@ -100,10 +107,25 @@
 		
 		</div>
 		
-		<p>今天同事遇到一个奇怪的问题，Testng测试代码在本地和虚拟机的eclipse上执行没有问题，在jenkins上执行报md5校验错误。从日志可以看出，测试代码中需要做hash的字符串中有中文，初步判断跟字符编码有关系。调用md5方法的入参是String，跟踪代码发现，String需要转换为byte[]，在转byte[]的时候，没有指定字符集则使用默认字符集，默认的字符集来自系统属性file.encoding：</p>
-<p><img src="/images/20150623001.png" alt="java.nio.charset.Charset"></p>
-<p>通过在ant加输出日志，发现jenkins上执行时， file.encoding属性为GBK，而通过visualvm检查本地eclipse执行的程序，file.encoding属性为UTF-8，JVM arguments页可以看到-Dfile.encoding=UTF-8，也就是说eclipse跟据我们项目的编码自动加了参数。</p>
-<p>根据以上分析，有2种解决方案：<br>1、在ant执行tesgng中加入参数 &lt;sysproperty key=”file.encoding” value=”UTF-8” /&gt;<br>2、在hash的时候传入正确编码的byte[]，而不是String。</p>
+		<p>我司使用TIBCO做为JMS中间件，最近需要做应用的JMS相关容错测试，因此对TIBCO的容错性做了粗浅的研究。</p>
+<p>TIBCO提供了主备模式的容错设计，通过配置一对服务器（一主一备）进行容错。正常情况下，主服务器接受客户端的连接和传递消息，一旦主服务器出现故障，备份服务器变为主服务器继续工作，原来的主服务器恢复后，变为备份服务器。</p>
+<p>架构上可分为：共享状态模式、非共享状态模式。非共享状态模式在故障切换的时候会出现消息丢失、重复等问题。我司目前使用的是共享状态模式。</p>
+<p><img src="/images/2015072201.png" alt="图1共享状态"></p>
+<p><img src="/images/2015072202.png" alt="图2 非共享状态"></p>
+<p><strong>共享状态</strong></p>
+<p>为了提供最大程度的故障切换保护，主服务和备份服务必须共享相同的状体，这些状态包括三个方面：<br>1、    持久化的消息数据<br>2、    主服务的客户端连接<br>3、    消息传递的元数据<br>当发生切换时，备份服务器重读所有共享信息。<br><a id="more"></a><br><strong>共享状态故障切换过程</strong></p>
+<p><em>发现</em></p>
+<p>备份服务器发现主服务器故障有两种方式：<br>1、心跳故障：主服务器通过向备份服务器发送心跳消息，表明它仍然在运行。当网络发生故障，造成服务器间停止交互时，备份服务器可以检测到稳定的心跳被打断。<br>2、连接故障：备份服务器可以检测到与主服务器的TCP连接失败。当程序意外终止时，备份服务器发现连接断开。<br>当的主服务器心跳停止，备份服务器等待其激活间隔。默认心跳间隔是3秒，激活间隔是10秒。</p>
+<p><em>响应</em></p>
+<p>当备份服务器（用B替代）检测主服务器（用A替代）的故障时，则试图让自己成为主服务器。首先，B获得当前共享状态的锁，能够获取，它就变成了新的主服务器。若B无法获立即取共享状态的锁，它在试图获取锁（得到锁并成为主服务器）和尝试重新连接到A之间交替操作，直到其中一个成功。</p>
+<p><em>角色颠倒</em></p>
+<p>当B成为新的主服务器时，可以重新启动A 作为备份服务器，让服务器交换角色。</p>
+<p><em>客户端转移</em></p>
+<p>当B成为新的主服务器后，客户端自动转移到B。B从共享存储中读取客户端的当前状态，向客户端发送持久消息。<br>当容错切换发生时，客户端会收到通知。Java  客户端程序定义一个ExceptionListener 来接收容错切换通知，客户端设置system property tibco.tibjms.ft.switch.exception为任意值。 但API文档说明相关操作有死锁风险（NOTE: when the exception listener is called, the exception listener is not allowed to call any EMS method. To do so in this case risks a deadlock in the client.）。</p>
+<p><strong>配置客户端容错连接</strong></p>
+<p>客户端的连接URL可以指定用逗号分隔的多个服务器地址，例如：tcp://server0:7222, tcp://server1:7344。客户端会按顺序试图连接，如果第一个连接失败会连接第二个。<br>在容错切换过程中，客户端会尝试重连到备份服务器。默认情况下，客户端将尝试重联4次，每一次尝试有500毫秒延迟。</p>
+<p>tibjms-6.0.1.jar包中com.tibco.tibjms.TibjmsConnection 中做了相关定义：<br>int _reconnect_attempt_count = 4;<br>int _reconnect_attempt_delay = 500;<br>int _reconnectAttemptTimeout = 0;</p>
+<p>可以通过修改factories.conf文件或通过客户端连接工厂API设置。<br>JAVA代码可以使用 TibjmsConnectionFactory的setReconnAttemptCount(),setReconnAttemptDelay(),setReconnAttemptTimeout() 方法设置新的失败重连参数，例如：<br>factory.setReconnAttemptCount(10);<br>factory.setReconnAttemptDelay(1000);<br>factory.setReconnAttemptTimeout(1000);.</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -117,7 +139,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/Java/">Java</a>
+  <span></span> <a href="/tags/JMS/">JMS</a><a href="/tags/Java/">Java</a>
   </div>
 
 </div>
@@ -126,7 +148,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.zhenghongzhi.cn/2015/06/23/file.encoding-hash/" data-title="file.encoding对hash造成的影响 | 郑鸿志的博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.zhenghongzhi.cn/2015/07/22/tibco-fault-tolerance/" data-title="TIBCO容错研究(1) | 郑鸿志的博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -139,19 +161,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/07/22/tibco-fault-tolerance/" title="TIBCO容错研究(1)">
-  <strong>上一篇：</strong><br/>
-  <span>
-  TIBCO容错研究(1)</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/06/19/xpath-predicates/"  title="WebDriver使用xpath的谓语做精确定位">
+<a href="/2015/06/23/file.encoding-hash/"  title="file.encoding对hash造成的影响">
  <strong>下一篇：</strong><br/> 
- <span>WebDriver使用xpath的谓语做精确定位
+ <span>file.encoding对hash造成的影响
 </span>
 </a>
 </div>
