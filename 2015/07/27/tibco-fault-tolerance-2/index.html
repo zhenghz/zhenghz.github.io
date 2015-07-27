@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150727002.png">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150727003.png">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150727004.png">
-<meta property="og:updated_time" content="2015-07-27T08:14:04.445Z">
+<meta property="og:updated_time" content="2015-07-27T08:47:09.596Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TIBCO容错研究(2)">
 <meta name="twitter:description" content="测试方法的研究
@@ -125,6 +125,8 @@
 <p><img src="/images/20150727002.png" alt="图2 客户端数次重传失败后，转而连接备份服务器"></p>
 <p>但是需要注意的是：主服务器重启完毕并挂载nfs前，datastore一直处于被锁状态，无法完成主备切换，生产或类生产环境是否存在同样的问题，值得关注。</p>
 <p>重启服务器可以满足心跳故障的测试需求。<br><a id="more"></a><br><strong>测试结果</strong></p>
+<p><em>测试环境</em></p>
+<p>TIBCO 服务器 version: 7.0.1 V4<br>客户端TICBOJAR包：tibjms-6.0.1.jar</p>
 <p><em>心跳故障下的测试</em></p>
 <p>在心跳故障情况下，客户端连接到备份服务器上，由于主备切换未完成，客户端收到Server in standby mode err，然后尝试重连主服务器，往复4次后，客户端抛出异常：CONNECTION EXCEPTION: Connection has been terminated。</p>
 <p><img src="/images/20150727003.png" alt="图3 由于主备切换未完成，客户端收到Server in standby mode err，然后尝试重连主服务器"></p>
