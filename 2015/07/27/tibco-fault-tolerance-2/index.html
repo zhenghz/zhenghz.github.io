@@ -4,24 +4,36 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>file.encoding对hash造成的影响 | 郑鸿志的博客</title>
+    <title>TIBCO容错研究(2) | 郑鸿志的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="郑鸿志">
     
 
     
-    <meta name="description" content="今天同事遇到一个奇怪的问题，Testng测试代码在本地和虚拟机的eclipse上执行没有问题，在jenkins上执行报md5校验错误。从日志可以看出，测试代码中需要做hash的字符串中有中文，初步判断跟字符编码有关系。调用md5方法的入参是String，跟踪代码发现，String需要转换为byte[]，在转byte[]的时候，没有指定字符集则使用默认字符集，默认的字符集来自系统属性file.enc">
+    <meta name="description" content="测试方法的研究
+如前文所述，我们需要测试测试心跳故障和连接故障下的TIBCO表现。
+经过测试可以发现：
+1、    无论在主服务器的TIBCO控制台输入shutdown，还是在Linux命令行下使用kill -9杀TIBCO进程，主服务器均向客户端发送了FIN,ACK，友好的关闭连接，同时也向备份服务器发送了FIN,ACK，备份服务器和客户端均可判断出连接故障，备份服务器开始做主备切换，客户端向备">
 <meta property="og:type" content="article">
-<meta property="og:title" content="file.encoding对hash造成的影响">
-<meta property="og:url" content="http://www.zhenghongzhi.cn/2015/06/23/file.encoding-hash/index.html">
+<meta property="og:title" content="TIBCO容错研究(2)">
+<meta property="og:url" content="http://www.zhenghongzhi.cn/2015/07/27/tibco-fault-tolerance-2/index.html">
 <meta property="og:site_name" content="郑鸿志的博客">
-<meta property="og:description" content="今天同事遇到一个奇怪的问题，Testng测试代码在本地和虚拟机的eclipse上执行没有问题，在jenkins上执行报md5校验错误。从日志可以看出，测试代码中需要做hash的字符串中有中文，初步判断跟字符编码有关系。调用md5方法的入参是String，跟踪代码发现，String需要转换为byte[]，在转byte[]的时候，没有指定字符集则使用默认字符集，默认的字符集来自系统属性file.enc">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150623001.png">
-<meta property="og:updated_time" content="2015-07-22T02:29:44.423Z">
+<meta property="og:description" content="测试方法的研究
+如前文所述，我们需要测试测试心跳故障和连接故障下的TIBCO表现。
+经过测试可以发现：
+1、    无论在主服务器的TIBCO控制台输入shutdown，还是在Linux命令行下使用kill -9杀TIBCO进程，主服务器均向客户端发送了FIN,ACK，友好的关闭连接，同时也向备份服务器发送了FIN,ACK，备份服务器和客户端均可判断出连接故障，备份服务器开始做主备切换，客户端向备">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150727001.png">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150727002.png">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150727003.png">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150727004.png">
+<meta property="og:updated_time" content="2015-07-27T08:14:04.445Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="file.encoding对hash造成的影响">
-<meta name="twitter:description" content="今天同事遇到一个奇怪的问题，Testng测试代码在本地和虚拟机的eclipse上执行没有问题，在jenkins上执行报md5校验错误。从日志可以看出，测试代码中需要做hash的字符串中有中文，初步判断跟字符编码有关系。调用md5方法的入参是String，跟踪代码发现，String需要转换为byte[]，在转byte[]的时候，没有指定字符集则使用默认字符集，默认的字符集来自系统属性file.enc">
+<meta name="twitter:title" content="TIBCO容错研究(2)">
+<meta name="twitter:description" content="测试方法的研究
+如前文所述，我们需要测试测试心跳故障和连接故障下的TIBCO表现。
+经过测试可以发现：
+1、    无论在主服务器的TIBCO控制台输入shutdown，还是在Linux命令行下使用kill -9杀TIBCO进程，主服务器均向客户端发送了FIN,ACK，友好的关闭连接，同时也向备份服务器发送了FIN,ACK，备份服务器和客户端均可判断出连接故障，备份服务器开始做主备切换，客户端向备">
 
     
     <link rel="alternative" href="/atom.xml" title="郑鸿志的博客" type="application/atom+xml">
@@ -80,14 +92,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/06/23/file.encoding-hash/" title="file.encoding对hash造成的影响" itemprop="url">file.encoding对hash造成的影响</a>
+      <a href="/2015/07/27/tibco-fault-tolerance-2/" title="TIBCO容错研究(2)" itemprop="url">TIBCO容错研究(2)</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
 		
   <p class="article-time">
-    <time datetime="2015-06-23T09:46:02.000Z" itemprop="datePublished"> 发表于 2015-06-23</time>
+    <time datetime="2015-07-27T08:06:22.000Z" itemprop="datePublished"> 发表于 2015-07-27</time>
     
   </p>
 </header>
@@ -100,10 +112,29 @@
 		
 		</div>
 		
-		<p>今天同事遇到一个奇怪的问题，Testng测试代码在本地和虚拟机的eclipse上执行没有问题，在jenkins上执行报md5校验错误。从日志可以看出，测试代码中需要做hash的字符串中有中文，初步判断跟字符编码有关系。调用md5方法的入参是String，跟踪代码发现，String需要转换为byte[]，在转byte[]的时候，没有指定字符集则使用默认字符集，默认的字符集来自系统属性file.encoding：</p>
-<p><img src="/images/20150623001.png" alt="java.nio.charset.Charset"></p>
-<p>通过在ant加输出日志，发现jenkins上执行时， file.encoding属性为GBK，而通过visualvm检查本地eclipse执行的程序，file.encoding属性为UTF-8，JVM arguments页可以看到-Dfile.encoding=UTF-8，也就是说eclipse跟据我们项目的编码自动加了参数。</p>
-<p>根据以上分析，有2种解决方案：<br>1、在ant执行tesgng中加入参数 &lt;sysproperty key=”file.encoding” value=”UTF-8” /&gt;<br>2、在hash的时候传入正确编码的byte[]，而不是String。</p>
+		<p><strong>测试方法的研究</strong></p>
+<p>如前文所述，我们需要测试测试心跳故障和连接故障下的TIBCO表现。</p>
+<p>经过测试可以发现：</p>
+<p>1、    无论在主服务器的TIBCO控制台输入shutdown，还是在Linux命令行下使用kill -9杀TIBCO进程，主服务器均向客户端发送了FIN,ACK，友好的关闭连接，同时也向备份服务器发送了FIN,ACK，备份服务器和客户端均可判断出连接故障，备份服务器开始做主备切换，客户端向备份服务器发送SYN，创建新的连接。</p>
+<p><img src="/images/20150727001.png" alt="图1 客户端向备份服务器发送SYN，创建新的连接"></p>
+<p>这两种操作方式均满足连接故障的要求。</p>
+<p>2、    直接重启主务器，TIBCO日志显示：</p>
+<p><em>Missing heartbeats from primary server ‘tcp://192.168.65.121:7222’.</em><br><em>Server activating on failure of ‘tcp://192.168.65.121:7222’.</em><br><em>Server rereading configuration.</em><br><em>Recovering state, please wait.</em><br><em>ERROR: Unable to open store file ‘/mqdata/QA/QAEmsServer1/datastore/async-msgs.db’, file may be locked.</em><br><em>ERROR: Unable to open store file ‘/mqdata/QA/QAEmsServer1/datastore/meta.db’, file may be locked.</em><br><em>ERROR: Unable to open store file ‘/mqdata/QA/QAEmsServer1/datastore/sync-msgs.db’, file may be locked.</em><br><em>ERROR: Server failed to recover state.</em><br><em>Server is re-entering standby mode.  </em><br><em>Missing heartbeats from primary server </em></p>
+<p>可以清楚的发现，备份服务器检测到心跳异常，并作恢复尝试。</p>
+<p>客户端连接的TCP消息，可以看出主服务器未发送FIN,ACK来优雅的关闭连接，客户端数次重传失败后，转而连接备份服务器。</p>
+<p><img src="/images/20150727002.png" alt="图2 客户端数次重传失败后，转而连接备份服务器"></p>
+<p>但是需要注意的是：主服务器重启完毕并挂载nfs前，datastore一直处于被锁状态，无法完成主备切换，生产或类生产环境是否存在同样的问题，值得关注。</p>
+<p>重启服务器可以满足心跳故障的测试需求。<br><a id="more"></a><br><strong>测试结果</strong></p>
+<p><em>心跳故障下的测试</em></p>
+<p>在心跳故障情况下，客户端连接到备份服务器上，由于主备切换未完成，客户端收到Server in standby mode err，然后尝试重连主服务器，往复4次后，客户端抛出异常：CONNECTION EXCEPTION: Connection has been terminated。</p>
+<p><img src="/images/20150727003.png" alt="图3 由于主备切换未完成，客户端收到Server in standby mode err，然后尝试重连主服务器"></p>
+<p><em>连接故障下的测试</em></p>
+<p>Kill 主服务器TIBCO进程后，客户端跟主服务器Say goodbye后，转后连接备份服务器。<br>比较有意思的是，在客户端向服务端发送一个12字节的流（77 99 aa dd 00 00 00 00 00 00 00 00），并收到确认应答后，交互进入阻塞状态，直到备份服务器完成主备切换。</p>
+<p><img src="/images/20150727004.png" alt="图4 TIBCO的握手协议"></p>
+<p>主备切换完毕后，客户端可继续交互，整个过程，客户端未抛出任何异常。<br>分析tibjms，可以发现，客户端发送的这个字节流，是客户端与服务端的握手协议的一部分，是客户端发送给服务端的一个固定标识。由于客户端采用readFully方式获取服务端的返回应答，因此会长时间阻塞，直到服务端返回12字节的应答码。</p>
+<p>如果我们配置了reconnectAttemptTimeout，则这个过程变的可控，在设置的时间内未完成整个握手，则客户端主动发送FIN，ACK，关闭与服务端的连接，往复4次后，备份服务器未完成主备切换，客户端抛出异常。</p>
+<p><em>综述</em></p>
+<p>综上所述：TIBCO已具备较强的容错机制，但是，一旦超出它的控制范围，就需要客户端框架做必要的异常捕获和重连保护，为了测试客户端框架的容错机制，我们可以通过必要的配置，让过程超过TICBO容错范围。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -117,7 +148,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/Java/">Java</a>
+  <span></span> <a href="/tags/JMS/">JMS</a><a href="/tags/Java/">Java</a>
   </div>
 
 </div>
@@ -126,7 +157,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.zhenghongzhi.cn/2015/06/23/file.encoding-hash/" data-title="file.encoding对hash造成的影响 | 郑鸿志的博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.zhenghongzhi.cn/2015/07/27/tibco-fault-tolerance-2/" data-title="TIBCO容错研究(2) | 郑鸿志的博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -139,19 +170,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/07/22/tibco-fault-tolerance/" title="TIBCO容错研究(1)">
-  <strong>上一篇：</strong><br/>
-  <span>
-  TIBCO容错研究(1)</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/06/19/xpath-predicates/"  title="WebDriver使用xpath的谓语做精确定位">
+<a href="/2015/07/22/tibco-fault-tolerance/"  title="TIBCO容错研究(1)">
  <strong>下一篇：</strong><br/> 
- <span>WebDriver使用xpath的谓语做精确定位
+ <span>TIBCO容错研究(1)
 </span>
 </a>
 </div>

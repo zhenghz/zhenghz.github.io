@@ -80,6 +80,79 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2015/07/27/tibco-fault-tolerance-2/" title="TIBCO容错研究(2)" itemprop="url">TIBCO容错研究(2)</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
+		
+  <p class="article-time">
+    <time datetime="2015-07-27T08:06:22.000Z" itemprop="datePublished"> 发表于 2015-07-27</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><strong>测试方法的研究</strong></p>
+<p>如前文所述，我们需要测试测试心跳故障和连接故障下的TIBCO表现。</p>
+<p>经过测试可以发现：</p>
+<p>1、    无论在主服务器的TIBCO控制台输入shutdown，还是在Linux命令行下使用kill -9杀TIBCO进程，主服务器均向客户端发送了FIN,ACK，友好的关闭连接，同时也向备份服务器发送了FIN,ACK，备份服务器和客户端均可判断出连接故障，备份服务器开始做主备切换，客户端向备份服务器发送SYN，创建新的连接。</p>
+<p><img src="/images/20150727001.png" alt="图1 客户端向备份服务器发送SYN，创建新的连接"></p>
+<p>这两种操作方式均满足连接故障的要求。</p>
+<p>2、    直接重启主务器，TIBCO日志显示：</p>
+<p><em>Missing heartbeats from primary server ‘tcp://192.168.65.121:7222’.</em><br><em>Server activating on failure of ‘tcp://192.168.65.121:7222’.</em><br><em>Server rereading configuration.</em><br><em>Recovering state, please wait.</em><br><em>ERROR: Unable to open store file ‘/mqdata/QA/QAEmsServer1/datastore/async-msgs.db’, file may be locked.</em><br><em>ERROR: Unable to open store file ‘/mqdata/QA/QAEmsServer1/datastore/meta.db’, file may be locked.</em><br><em>ERROR: Unable to open store file ‘/mqdata/QA/QAEmsServer1/datastore/sync-msgs.db’, file may be locked.</em><br><em>ERROR: Server failed to recover state.</em><br><em>Server is re-entering standby mode.  </em><br><em>Missing heartbeats from primary server </em></p>
+<p>可以清楚的发现，备份服务器检测到心跳异常，并作恢复尝试。</p>
+<p>客户端连接的TCP消息，可以看出主服务器未发送FIN,ACK来优雅的关闭连接，客户端数次重传失败后，转而连接备份服务器。</p>
+<p><img src="/images/20150727002.png" alt="图2 客户端数次重传失败后，转而连接备份服务器"></p>
+<p>但是需要注意的是：主服务器重启完毕并挂载nfs前，datastore一直处于被锁状态，无法完成主备切换，生产或类生产环境是否存在同样的问题，值得关注。</p>
+<p>重启服务器可以满足心跳故障的测试需求。<br>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2015/07/27/tibco-fault-tolerance-2/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Java/">Java</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/JMS/">JMS</a><a href="/tags/Java/">Java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2015/07/22/tibco-fault-tolerance/" title="TIBCO容错研究(1)" itemprop="url">TIBCO容错研究(1)</a>
   </h1>
   <p class="article-author">By
@@ -506,7 +579,7 @@ Swap:      <span class="number">4096532</span>        116    <span class="number
 		<ul>
 		
 		  
-			<li><a href="/categories/Java/" title="Java">Java<sup>3</sup></a></li>
+			<li><a href="/categories/Java/" title="Java">Java<sup>4</sup></a></li>
 		  
 		
 		  
@@ -529,7 +602,11 @@ Swap:      <span class="number">4096532</span>        116    <span class="number
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/Java/" title="Java">Java<sup>3</sup></a></li>
+				<li><a href="/tags/Java/" title="Java">Java<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/JMS/" title="JMS">JMS<sup>2</sup></a></li>
 			
 		
 			
@@ -541,15 +618,11 @@ Swap:      <span class="number">4096532</span>        116    <span class="number
 			
 		
 			
-				<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/Spring/" title="Spring">Spring<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/JMS/" title="JMS">JMS<sup>1</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
 			
 		
 			
