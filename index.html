@@ -97,19 +97,12 @@
 <p>Spring提供了2个MDP容器：org.springframework.jms.listener.DefaultMessageListenerContainer、org.springframework.jms.listener.SimpleMessageListenerContainer。</p>
 <p><strong>DefaultMessageListenerContainer重连机制</strong></p>
 <p>DefaultMessageListenerContainer启动内部类AsyncMessageListenerInvoker作为线程。</p>
-<p> <img src="/images/20150730001.png" alt="DefaultMessageListenerContainer重连机制"></p>
-<p>当run()出现异常，则间隔5秒做一次重连尝试，直到成功。</p>
-<p> <img src="/images/20150730002.png" alt="DefaultMessageListenerContainer重连机制"></p>
-<p> <img src="/images/20150730003.png" alt="DefaultMessageListenerContainer重连机制"></p>
-<p> <img src="/images/20150730004.png" alt="DefaultMessageListenerContainer重连机制"></p>
-<p><strong>SimpleMessageListenerContainer重连机制</strong></p>
-<p>SimpleMessageListenerContainer 注册JMSException监听，当出现异常时，在onException中做重连。</p>
-<p><img src="/images/20150730005.png" alt="SimpleMessageListenerContainer重连机制"></p>
-<p>问题是，如果连接不成功，则没有再次重连的机制，因此容错能力较弱</p>
-
+<p> <img src="/images/20150730001.png" alt="DefaultMessageListenerContainer重连机制"><br>
         
         
         <p class="article-more-link">
+          
+            <a href="/2015/07/30/tibco-fault-tolerance-3/#more">Read More</a>
           
        </p>
     </div>

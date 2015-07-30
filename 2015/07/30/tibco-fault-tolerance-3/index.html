@@ -28,7 +28,7 @@ D">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730003.png">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730004.png">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730005.png">
-<meta property="og:updated_time" content="2015-07-30T12:34:16.263Z">
+<meta property="og:updated_time" content="2015-07-30T12:59:59.765Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TIBCO容错研究(3)">
 <meta name="twitter:description" content="Spring框架的重连机制研究
@@ -117,8 +117,7 @@ D">
 <p>Spring提供了2个MDP容器：org.springframework.jms.listener.DefaultMessageListenerContainer、org.springframework.jms.listener.SimpleMessageListenerContainer。</p>
 <p><strong>DefaultMessageListenerContainer重连机制</strong></p>
 <p>DefaultMessageListenerContainer启动内部类AsyncMessageListenerInvoker作为线程。</p>
-<p> <img src="/images/20150730001.png" alt="DefaultMessageListenerContainer重连机制"></p>
-<p>当run()出现异常，则间隔5秒做一次重连尝试，直到成功。</p>
+<p> <img src="/images/20150730001.png" alt="DefaultMessageListenerContainer重连机制"><br><a id="more"></a><br>当run()出现异常，则间隔5秒做一次重连尝试，直到成功。</p>
 <p> <img src="/images/20150730002.png" alt="DefaultMessageListenerContainer重连机制"></p>
 <p> <img src="/images/20150730003.png" alt="DefaultMessageListenerContainer重连机制"></p>
 <p> <img src="/images/20150730004.png" alt="DefaultMessageListenerContainer重连机制"></p>
