@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150727002.png">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150727003.png">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150727004.png">
-<meta property="og:updated_time" content="2015-07-27T08:47:09.596Z">
+<meta property="og:updated_time" content="2015-07-30T12:27:08.127Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TIBCO容错研究(2)">
 <meta name="twitter:description" content="测试方法的研究
@@ -137,6 +137,8 @@
 <p>如果我们配置了reconnectAttemptTimeout，则这个过程变的可控，在设置的时间内未完成整个握手，则客户端主动发送FIN，ACK，关闭与服务端的连接，往复4次后，备份服务器未完成主备切换，客户端抛出异常。</p>
 <p><em>综述</em></p>
 <p>综上所述：TIBCO已具备较强的容错机制，但是，一旦超出它的控制范围，就需要客户端框架做必要的异常捕获和重连保护，为了测试客户端框架的容错机制，我们可以通过必要的配置，让过程超过TICBO容错范围。</p>
+<p><strong>tibjms.jar中的ConnectionFactory的实现与异常的关系</strong></p>
+<p>Tibjms.jar中，TibjmsConnectionFactory实现JMS的ConnectionFactory，createConnection方法创建具体的Connection（TibjmsXATopicConnection、TibjmsTopicConnection、TibjmsXAQueue<br>Connection、TibjmsQueueConnection）并返回。实现类均在构造方法中调用父类TibjmsConnection的构造方法创建TibjmsxLink，并调用 TibjmsxLink.connect创建socket连接和执行握手。<br>因此只要每次出现异常后调用ConnectionFactory.createConnection即可得到一个新的连接。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -172,6 +174,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2015/07/30/tibco-fault-tolerance-3/" title="TIBCO容错研究(3)">
+  <strong>上一篇：</strong><br/>
+  <span>
+  TIBCO容错研究(3)</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2015/07/22/tibco-fault-tolerance/"  title="TIBCO容错研究(1)">
@@ -205,7 +215,7 @@
 		<ul>
 		
 		  
-			<li><a href="/categories/Java/" title="Java">Java<sup>4</sup></a></li>
+			<li><a href="/categories/Java/" title="Java">Java<sup>5</sup></a></li>
 		  
 		
 		  
@@ -228,11 +238,15 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/Java/" title="Java">Java<sup>4</sup></a></li>
+				<li><a href="/tags/Java/" title="Java">Java<sup>5</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/JMS/" title="JMS">JMS<sup>2</sup></a></li>
+				<li><a href="/tags/JMS/" title="JMS">JMS<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Spring/" title="Spring">Spring<sup>2</sup></a></li>
 			
 		
 			
@@ -241,10 +255,6 @@
 		
 			
 				<li><a href="/tags/TestAutomation/" title="TestAutomation">TestAutomation<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Spring/" title="Spring">Spring<sup>1</sup></a></li>
 			
 		
 			
