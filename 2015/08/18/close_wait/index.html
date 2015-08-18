@@ -25,7 +25,7 @@
 从tcpdump抓取的数据可以看">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150818001.png">
 <meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150818002.png">
-<meta property="og:updated_time" content="2015-08-18T03:15:34.222Z">
+<meta property="og:updated_time" content="2015-08-18T03:29:14.795Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="恼人的CLOSE_WAIT">
 <meta name="twitter:description" content="最近做性能测试遇到一个恼人的CLOSE_WAIT问题，压测JAVA应用，服务器上出现大量的CLOSE_WAIT，最后造成应用无响应。
@@ -114,10 +114,9 @@
 <p>从《TCP-IP详解卷一：协议》第18章的图18-12 TCP的状态变迁图可以看到，当收到FIN返回ACK后，状态变为CLOSE_WAIT，如果程序发FIN则状态继续变化，否则就僵死在这里。也就是说，服务端程序一直没有发送FIN。</p>
 <p><img src="/images/20150818001.png" alt="TCP的状态变迁图"></p>
 <p>从tcpdump抓取的数据可以看到，客户端与服务端之间5分钟没有交互，则客户端（65.56）发送FIN给服务端（65.139），服务端返回ACK后再无下一步的动作，因此一直是CLOSE_WAIT状态，符合前面的表述。</p>
-<p><img src="/images/20150818002.png" alt="tcpdump抓起的数据"></p>
-<p>为什么每个有问题的报文都是无交互后5分钟后发送FIN，这是很有意思的问题。首先看一下网络结构，65.56是台apache服务器，后面挂了若干tomcat，65.139是其中一个。另外一个被压测的入口应用调用这个apache，10秒无响应则关闭http连接。所有apache、tomcat跟5分钟有关的配置只有一个，apache的timeout为300秒，也就是说5分钟后无交互则断掉socket连接，所以才会有之前tcpdump表现出来的现象。</p>
+<p><img src="/images/20150818002.png" alt="tcpdump抓起的数据"><br><a id="more"></a><br>为什么每个有问题的报文都是无交互后5分钟后客户端发送FIN，这是很有意思的问题。首先看一下网络结构，65.56是台apache服务器，后面挂了若干tomcat，65.139是其中一个。另外一个被压测的入口应用调用这个apache，入口应用10秒收不到应答报文则关闭http连接。这些跟5分钟有什么关系呢？翻了所有apache、tomcat跟5分钟有关的配置只有一个，apache的timeout为300秒，也就是说5分钟后无交互则断掉socket连接，所以才会有之前tcpdump表现出来的现象。</p>
 <p>从网上查询的资料来看看，CLOSE_WAIT通常由程序缺陷引发。</p>
-<p>查询线程dump，可以看到大量 ajp-bio-xxx-exec 线程处于wait状态，跟我司相关是是一个名为CpPaymentServiceImpl的类。</p>
+<p>打印询线程dump，可以看到大量ajp-bio-xxx-exec线程处于wait状态，跟我司相关是一个名为CpPaymentServiceImpl的类。部分代码如下：</p>
 <pre><code><span class="keyword">public</span> class CpPaymentServiceImpl implements CpPaymentService{
     <span class="keyword">private</span> BlockingQueue<span class="subst">&lt;</span><span class="built_in">String</span><span class="subst">&gt;</span> blockQueue;
 
@@ -140,7 +139,7 @@
         <span class="attribute">...</span><span class="attribute">...</span>
     }
 }
-</code></pre><p>从代码可以看出，开发用了阻塞队列，致命的问题就发生在这里。每次调用process的时候 blockQueue new了一个新的对象，等异步回调handleResponse 后，blockQueue解除阻塞，看上去挺好。可以，关键的问题CpPaymentServiceImpl由Spring容器管理，Spring默认是单例，多线程掉用process，等回调的时候，此BlockingQueue已非彼BlockingQueue了。因此造成无法解除计划中的阻塞，造成线程挂起在那里，因此也无法完成关闭连接的后续动作。</p>
+</code></pre><p>从代码可以看出，开发用了阻塞队列，致命的问题就发生在这里。每次调用process的时候 blockQueue new了一个新的对象，等异步回调handleResponse 后，blockQueue解除阻塞，看上去挺好。可以，关键的问题CpPaymentServiceImpl由Spring容器管理，Spring默认是单例，多线程掉用process，等回调的时候，此BlockingQueue已非彼BlockingQueue了，造成无法解除计划中的阻塞，线程因此永远挂起在那里，因此也无法完成关闭连接的后续动作。ajp-bio-xxx-exec是tomcat与apache之间的通讯线程（使用ajp协议），线程总量是由线程池的配置控制，线程堆积不释放，导致最后tomcat无法继续处理请求。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
