@@ -97,7 +97,7 @@
 <p>从《TCP-IP详解卷一：协议》第18章的图18-12 TCP的状态变迁图可以看到，当收到FIN返回ACK后，状态变为CLOSE_WAIT，如果程序发FIN则状态继续变化，否则就僵死在这里。也就是说，服务端程序一直没有发送FIN。</p>
 <p><img src="/images/20150818001.png" alt="TCP的状态变迁图"></p>
 <p>从tcpdump抓取的数据可以看到，客户端与服务端之间5分钟没有交互，则客户端（65.56）发送FIN给服务端（65.139），服务端返回ACK后再无下一步的动作，因此一直是CLOSE_WAIT状态，符合前面的表述。</p>
-<p><img src="/images/20150818002.png" alt="tcpdump抓起的数据"><br>
+<p><img src="/images/20150818002.png" alt="tcpdump抓取的数据"><br>
         
         
         <p class="article-more-link">
