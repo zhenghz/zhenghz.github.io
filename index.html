@@ -80,6 +80,73 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2016/01/28/jmeter/" title="获取Jmeter源码及部署调试环境" itemprop="url">获取Jmeter源码及部署调试环境</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
+		
+  <p class="article-time">
+    <time datetime="2016-01-28T11:27:09.000Z" itemprop="datePublished"> 发表于 2016-01-28</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Jmeter是一款应用较为广泛的开源性能测试工具，由于工作中接手了前辈遗留下来的Jmeter插件，不得不弄一个Jmeter的调试环境。</p>
+<p>Jmeter官网提供了一个SVN地址的获取页面（<a href="http://jmeter.apache.org/svnindex.html），通过指引，我们可以从" target="_blank" rel="external">http://jmeter.apache.org/svnindex.html），通过指引，我们可以从</a> <a href="http://svn.apache.org/repos/asf/jmeter/trunk" target="_blank" rel="external">http://svn.apache.org/repos/asf/jmeter/trunk</a> 获取一个只读的版本。</p>
+<p>下载后，需要将 eclipse.project、eclipse.classpath 两个文件的前缀去掉，这个比较坑，Win7上直接改名被拒绝，只能打开CMD窗口用rename命令解决。搞定后可以在eclipse导入这个工程，</p>
+<p>SVN上并没有提供依赖的Jar，在下载的文件中包含了一个build.xml，这个是ANT的配置文件，切换到Cmd窗口，进入当前目录，执行 ant download_jars，依赖的Jar会自动下载到 lib目录下。 刷新项目后，全部错误消失。</p>
+<p>但此时依然不能在eclipse中运行jmeter，还有另外另个坑需要填平。</p>
+<p>第一，jmeter是自加载依赖，jmeter自身核心的jar放在lib\ext下，需要先编译好这些文件，可以用 ant compile 来解决。</p>
+<p>第二，由于jmeter运行的启动路径在 jmeter\bin下，因此默认会取上层目录为工作路径，而我们在eclipse下启动，工作路径在 jmeter下，因此启动会报错，解决的办法有两种，一种是修改代码，另外一种是在启动时加参数<br>-Djmeter.home=jmeter路径，如下图：<br> <img src="/images/20160128195047.png" alt="Jmeter启动参数"></p>
+<p> 至此，执行NewDriver，可以顺利的出现Jmeter的主界面。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Performance/">Performance</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Performance/">Performance</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2015/08/18/close_wait/" title="恼人的CLOSE_WAIT" itemprop="url">恼人的CLOSE_WAIT</a>
   </h1>
   <p class="article-author">By
@@ -715,7 +782,7 @@ Swap:      <span class="number">4096532</span>        116    <span class="number
 		  
 		
 		  
-			<li><a href="/categories/Performance/" title="Performance">Performance<sup>1</sup></a></li>
+			<li><a href="/categories/Performance/" title="Performance">Performance<sup>2</sup></a></li>
 		  
 		
 		  
@@ -752,15 +819,15 @@ Swap:      <span class="number">4096532</span>        116    <span class="number
 			
 		
 			
+				<li><a href="/tags/Performance/" title="Performance">Performance<sup>2</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Webdriver/" title="Webdriver">Webdriver<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Performance/" title="Performance">Performance<sup>1</sup></a></li>
 			
 		
 			
@@ -843,7 +910,7 @@ Swap:      <span class="number">4096532</span>        116    <span class="number
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
 		
 		<a href="/about" target="_blank" title="郑鸿志">郑鸿志</a>
 		
