@@ -98,8 +98,8 @@
 <p>下载后，需要将 eclipse.project、eclipse.classpath 两个文件的前缀去掉，这个比较坑，Win7上直接改名被拒绝，只能打开CMD窗口用rename命令解决。搞定后可以在eclipse导入这个工程，</p>
 <p>SVN上并没有提供依赖的Jar，在下载的文件中包含了一个build.xml，这个是ANT的配置文件，切换到Cmd窗口，进入当前目录，执行 ant download_jars，依赖的Jar会自动下载到 lib目录下。 刷新项目后，全部错误消失。</p>
 <p>但此时依然不能在eclipse中运行jmeter，还有另外另个坑需要填平。</p>
-<p>第一，jmeter是自加载依赖，jmeter自身核心的jar放在lib\ext下，需要先编译好这些文件，可以用 ant compile 来解决。</p>
-<p>第二，由于jmeter运行的启动路径在 jmeter\bin下，因此默认会取上层目录为工作路径，而我们在eclipse下启动，工作路径在 jmeter下，因此启动会报错，解决的办法有两种，一种是修改代码，另外一种是在启动时加参数<br>-Djmeter.home=jmeter路径，如下图：<br> <img src="/images/20160128195047.png" alt="Jmeter启动参数"></p>
+<p>第一，jmeter自加载依赖。jmeter自身核心的jar放在lib\ext下，由jmeter自己加载，需要先编译好这些文件，否则无法启动。可以用 ant compile 来解决。</p>
+<p>第二，由于jmeter运行的启动路径在 jmeter\bin下，因此默认会取上层目录为工作路径，而我们在eclipse下启动，工作路径在 jmeter下，因此启动报错。解决的办法有两种，一种是修改源码 ，另一种是在启动时加参数<br>-Djmeter.home=jmeter路径，如下图：<br> <img src="/images/20160128195047.png" alt="Jmeter启动参数"></p>
 <p> 至此，执行NewDriver，可以顺利的出现Jmeter的主界面。</p>
 
         
