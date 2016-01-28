@@ -94,7 +94,7 @@
     <div class="article-content">
         
         <p>Jmeter是一款应用较为广泛的开源性能测试工具，由于工作中接手了前辈遗留下来的Jmeter插件，不得不弄一个Jmeter的调试环境。</p>
-<p>Jmeter官网提供了一个SVN地址的获取页面（<a href="http://jmeter.apache.org/svnindex.html），通过指引，我们可以从" target="_blank" rel="external">http://jmeter.apache.org/svnindex.html），通过指引，我们可以从</a> <a href="http://svn.apache.org/repos/asf/jmeter/trunk" target="_blank" rel="external">http://svn.apache.org/repos/asf/jmeter/trunk</a> 获取一个只读的版本。</p>
+<p>Jmeter官网提供了一个SVN地址的获取页面（ <a href="http://jmeter.apache.org/svnindex.html" target="_blank" rel="external">http://jmeter.apache.org/svnindex.html</a> ），通过指引，我们可以从 <a href="http://svn.apache.org/repos/asf/jmeter/trunk" target="_blank" rel="external">http://svn.apache.org/repos/asf/jmeter/trunk</a> 获取一个只读的版本。</p>
 <p>下载后，需要将 eclipse.project、eclipse.classpath 两个文件的前缀去掉，这个比较坑，Win7上直接改名被拒绝，只能打开CMD窗口用rename命令解决。搞定后可以在eclipse导入这个工程，</p>
 <p>SVN上并没有提供依赖的Jar，在下载的文件中包含了一个build.xml，这个是ANT的配置文件，切换到Cmd窗口，进入当前目录，执行 ant download_jars，依赖的Jar会自动下载到 lib目录下。 刷新项目后，全部错误消失。</p>
 <p>但此时依然不能在eclipse中运行jmeter，还有另外另个坑需要填平。</p>
