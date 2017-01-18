@@ -80,6 +80,99 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2017/01/13/zabbix_linux_1/" title="跟着zabbix学监控--前言" itemprop="url">跟着zabbix学监控--前言</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
+		
+  <p class="article-time">
+    <time datetime="2017-01-13T04:56:02.000Z" itemprop="datePublished"> 发表于 2017-01-13</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>操作系统的监控是性能监控的基础，Linux是目前的主流的服务器端操作系统。下面先从Zabbix对Linux 的监控入手。</p>
+<p>Zabbix对Linux的监控项，从性能测试的角度看可分为  CPU、Memory（含Swap）、Network、Filesystems、Processes 几大类。</p>
+<p>一、CPU<br>CPU资源监控的KEY包含：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">KEY</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">system.cpu.intr</td>
+<td style="text-align:center">设备的中断数。返回整数</td>
+</tr>
+<tr>
+<td style="text-align:left">system.cpu.load[<cpu>,<mode>]</mode></cpu></td>
+<td style="text-align:center">CPU 负载。返回浮点数</td>
+</tr>
+<tr>
+<td style="text-align:left">system.cpu.num[<type>]</type></td>
+<td style="text-align:center">CPU 数量，返回整数</td>
+</tr>
+<tr>
+<td style="text-align:left">system.cpu.switches</td>
+<td style="text-align:center">上下文的数量进行切换。返回整数</td>
+</tr>
+<tr>
+<td style="text-align:left">system.cpu.util[<cpu>,<type>,<mode>]</mode></type></cpu></td>
+<td style="text-align:center">CPU 使用率。返回浮点数</td>
+</tr>
+</tbody>
+</table>
+<p>阅读源码（3.2.2版本）可以发现以上数据来自/proc 文件系统 和系统函数：<br>| KEY | 说明 | 来源 |<br>|:——-|:——-:|——-:|<br>|system.cpu.intr|设备的中断数,返回整数|/proc/stat  intr 行|<br>|system.cpu.load[<cpu>,<mode>]|CPU 负载,返回浮点数|系统函数 getloadavg|<br>|system.cpu.num[<type>]|CPU 数量，返回整数|/proc/cpuinfo 统计processor出现数量|<br>|system.cpu.switches|上下文的数量进行切换，返回整数|/proc/stat  ctxt 行|<br>|system.cpu.util[<cpu>,<type>,<mode>]|CPU 使用率，返回浮点数|/proc/stat  cpu开头的相关行|</mode></type></cpu></type></mode></cpu></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Zabbix/">Zabbix</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Linux/">Linux</a><a href="/tags/Zabbix/">Zabbix</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2017/01/13/study_zabbix/" title="跟着zabbix学监控--前言" itemprop="url">跟着zabbix学监控--前言</a>
   </h1>
   <p class="article-author">By
@@ -683,70 +776,6 @@ public <span class="class"><span class="keyword">class</span> <span class="title
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/06/15/spring-sources-conflict/" title="Jar版本不一致造成Spring加载资源文件冲突" itemprop="url">Jar版本不一致造成Spring加载资源文件冲突</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
-		
-  <p class="article-time">
-    <time datetime="2015-06-15T08:59:01.000Z" itemprop="datePublished"> 发表于 2015-06-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>今天调试一个Java测试项目时出现报错：</p>
-<pre><code>Cause: com<span class="class">.ibatis</span><span class="class">.sqlmap</span><span class="class">.client</span><span class="class">.SqlMapException</span>: There is already <span class="tag">a</span> statement named XXXX <span class="keyword">in</span> this SqlMap.
-</code></pre><p>增加调试参数 -verbose:class 发现报错的相关Jar出现2个不同版本。</p>
-<p>为什么会带来这样的问题：<br>1、测试项目为了调试方便依赖了一堆其他项目<br>2、项目全部依赖ivy<br>3、某个项目的ivy相关Jar做了升级，其他项目未升级<br>4、加载ibatis的xml使用了classpath*，不同的版本的jar，Spring会当作2个不同的资源来处理<br>Failed to parse mapping resource: URL [jar:file:/D:/Local_Repository/ivy-cache/xxx/xxx/jars/xxx-1.5.0.10.jar!/xxx/xxx/xxx.xml]; </p>
-<p>解决办法：<br>1、项目的ivy使用了 rev=”latest.integration”，依赖的全部项目都要做Resolve。<br>2、使用ivy的 Show in Reverse Dependency Explorer 中的 Show all projects in workspace 功能检查jar的冲突</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Java/">Java</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Java/">Java</a><a href="/tags/Spring/">Spring</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
@@ -779,7 +808,7 @@ public <span class="class"><span class="keyword">class</span> <span class="title
 		  
 		
 		  
-			<li><a href="/categories/Zabbix/" title="Zabbix">Zabbix<sup>1</sup></a></li>
+			<li><a href="/categories/Zabbix/" title="Zabbix">Zabbix<sup>2</sup></a></li>
 		  
 		
 		  
@@ -816,19 +845,19 @@ public <span class="class"><span class="keyword">class</span> <span class="title
 			
 		
 			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Zabbix/" title="Zabbix">Zabbix<sup>2</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/TestAutomation/" title="TestAutomation">TestAutomation<sup>2</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Zabbix/" title="Zabbix">Zabbix<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Linux/" title="Linux">Linux<sup>1</sup></a></li>
 			
 		
 			
