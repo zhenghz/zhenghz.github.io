@@ -4,37 +4,22 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>TIBCO容错研究(3) | 郑鸿志的博客</title>
+    <title>郑鸿志的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="郑鸿志">
     
 
     
-    <meta name="description" content="Spring框架的重连机制研究
-Spring提供了2个MDP容器：org.springframework.jms.listener.DefaultMessageListenerContainer、org.springframework.jms.listener.SimpleMessageListenerContainer。
-DefaultMessageListenerContainer重连机制
-D">
-<meta property="og:type" content="article">
-<meta property="og:title" content="TIBCO容错研究(3)">
-<meta property="og:url" content="http://www.zhenghongzhi.cn/2015/07/30/tibco-fault-tolerance-3/index.html">
+    <meta name="description" content="郑鸿志的博客——探寻数据背后的真相">
+<meta property="og:type" content="website">
+<meta property="og:title" content="郑鸿志的博客">
+<meta property="og:url" content="http://www.zhenghongzhi.cn/page/2/index.html">
 <meta property="og:site_name" content="郑鸿志的博客">
-<meta property="og:description" content="Spring框架的重连机制研究
-Spring提供了2个MDP容器：org.springframework.jms.listener.DefaultMessageListenerContainer、org.springframework.jms.listener.SimpleMessageListenerContainer。
-DefaultMessageListenerContainer重连机制
-D">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730001.png">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730002.png">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730003.png">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730004.png">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730005.png">
-<meta property="og:updated_time" content="2015-07-30T12:59:59.765Z">
+<meta property="og:description" content="郑鸿志的博客——探寻数据背后的真相">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TIBCO容错研究(3)">
-<meta name="twitter:description" content="Spring框架的重连机制研究
-Spring提供了2个MDP容器：org.springframework.jms.listener.DefaultMessageListenerContainer、org.springframework.jms.listener.SimpleMessageListenerContainer。
-DefaultMessageListenerContainer重连机制
-D">
+<meta name="twitter:title" content="郑鸿志的博客">
+<meta name="twitter:description" content="郑鸿志的博客——探寻数据背后的真相">
 
     
     <link rel="alternative" href="/atom.xml" title="郑鸿志的博客" type="application/atom+xml">
@@ -87,109 +72,170 @@ D">
 </div>
     </header>
     <div id="container">
-      <div id="main" class="post" itemscope itemprop="blogPost">
-  
-	<article itemprop="articleBody"> 
-		<header class="article-info clearfix">
+      <div id="main">
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/07/30/tibco-fault-tolerance-3/" title="TIBCO容错研究(3)" itemprop="url">TIBCO容错研究(3)</a>
+      <a href="/2015/06/03/webdriver-textnode/" title="WebDriver如何取标签外的文本" itemprop="url">WebDriver如何取标签外的文本</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
 		
   <p class="article-time">
-    <time datetime="2015-07-30T12:24:56.000Z" itemprop="datePublished"> 发表于 2015-07-30</time>
+    <time datetime="2015-06-03T04:02:26.000Z" itemprop="datePublished"> 发表于 2015-06-03</time>
     
   </p>
 </header>
-	<div class="article-content">
-		
-		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
-		
-			
-		
-		</div>
-		
-		<p><strong>Spring框架的重连机制研究</strong></p>
-<p>Spring提供了2个MDP容器：org.springframework.jms.listener.DefaultMessageListenerContainer、org.springframework.jms.listener.SimpleMessageListenerContainer。</p>
-<p><strong>DefaultMessageListenerContainer重连机制</strong></p>
-<p>DefaultMessageListenerContainer启动内部类AsyncMessageListenerInvoker作为线程。</p>
-<p> <img src="/images/20150730001.png" alt="DefaultMessageListenerContainer重连机制"><br><a id="more"></a><br>当run()出现异常，则间隔5秒做一次重连尝试，直到成功。</p>
-<p> <img src="/images/20150730002.png" alt="DefaultMessageListenerContainer重连机制"></p>
-<p> <img src="/images/20150730003.png" alt="DefaultMessageListenerContainer重连机制"></p>
-<p> <img src="/images/20150730004.png" alt="DefaultMessageListenerContainer重连机制"></p>
-<p><strong>SimpleMessageListenerContainer重连机制</strong></p>
-<p>SimpleMessageListenerContainer 注册JMSException监听，当出现异常时，在onException中做重连。</p>
-<p><img src="/images/20150730005.png" alt="SimpleMessageListenerContainer重连机制"></p>
-<p>问题是，如果连接不成功，则没有再次重连的机制，因此容错能力较弱</p>
-  
-	</div>
-		<footer class="article-footer clearfix">
+    <div class="article-content">
+        
+        <p>在我们的自动化测试过程中，总是会碰到各种难搞的问题，比如说我们需要取标签外的文本信息，今天又被问到这个问题，所以重贴旧文。</p>
+<pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"div1"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div1<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话1
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div2<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话2
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div3<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话3
+    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div4<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话4
+<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+</code></pre><p>对于上面的HTML，如果我们想获取 “废话1”、“废话2”之类的文字，使用Webdriver 的 findElement是没有办法解决的，必须想起他办法解决。首先，我们了解一个概念，”废话1”这种，在HTML DOM里面叫做 textNode，是可以设置和获取的。<br>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2015/06/03/webdriver-textnode/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
 <div class="article-catetags">
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/Java/">Java</a>
+  <a class="article-category-link" href="/categories/TestAutomation/">TestAutomation</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/JMS/">JMS</a><a href="/tags/Java/">Java</a><a href="/tags/Spring/">Spring</a>
+  <span></span> <a href="/tags/TestAutomation/">TestAutomation</a><a href="/tags/Webdriver/">Webdriver</a>
   </div>
 
 </div>
 
 
 
-	<div class="article-share" id="share">
-	
-	  <div data-url="http://www.zhenghongzhi.cn/2015/07/30/tibco-fault-tolerance-3/" data-title="TIBCO容错研究(3) | 郑鸿志的博客" data-tsina="null" class="share clearfix">
-	  </div>
-	
-	</div>
 
+<div class="comments-count">
+	
+</div>
 
 </footer>
 
-   	       
-	</article>
-	
-<nav class="article-nav clearfix">
- 
- <div class="prev" >
- <a href="/2015/08/18/close_wait/" title="恼人的CLOSE_WAIT">
-  <strong>上一篇：</strong><br/>
-  <span>
-  恼人的CLOSE_WAIT</span>
-</a>
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/06/02/buffers-and-cached/" title="free中的buffers和cached(1)" itemprop="url">free中的buffers和cached(1)</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
+		
+  <p class="article-time">
+    <time datetime="2015-06-02T07:39:04.000Z" itemprop="datePublished"> 发表于 2015-06-02</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>linux查看系统内存常用命令free中有2个重要的参数buffers和cached：</p>
+<pre><code>                     total       used       free     shared    buffers     cached
+Mem:      <span class="number">16436192</span>   <span class="number">10914412</span>    <span class="number">5521780</span>          0     502256    <span class="number">5795248</span>
+-/+ buffers/cache:    <span class="number">4616908</span>   <span class="number">11819284</span>
+Swap:      <span class="number">4096532</span>        116    <span class="number">4096416</span>
+</code></pre><p>这2个参数到底是什么意思，百度了各种文章，大多概念混淆、含糊不清，难以得到满意的答案，今天做一个源码探索，发现free原来就是获取/proc/meminfo中对应的参数。</p>
+<p>执行 free;cat /proc/meminfo，两边的 buffers、cached完全一致</p>
+<pre><code>             total       used       free     shared    buffers     cached
+<span class="string">Mem:</span>      <span class="number">16436192</span>   <span class="number">10914716</span>    <span class="number">5521476</span>          <span class="number">0</span>     <span class="number">502256</span>    <span class="number">5795248</span>
+-<span class="regexp">/+ buffers/</span><span class="string">cache:</span>    <span class="number">4617212</span>   <span class="number">11818980</span>
+<span class="string">Swap:</span>      <span class="number">4096532</span>        <span class="number">116</span>    <span class="number">4096416</span>
+——————————————————————————————————————————————————————————————————————————
+<span class="string">MemTotal:</span>     <span class="number">16436192</span> kB
+<span class="string">MemFree:</span>       <span class="number">5521468</span> kB
+<span class="string">Buffers:</span>        <span class="number">502256</span> kB
+<span class="string">Cached:</span>        <span class="number">5795248</span> kB
+<span class="string">SwapCached:</span>         <span class="number">12</span> kB
+<span class="string">Active:</span>        <span class="number">6215352</span> kB
+<span class="string">Inactive:</span>      <span class="number">4218000</span> kB
+<span class="string">HighTotal:</span>           <span class="number">0</span> kB
+.....
+<span class="string">HugePages_Total:</span>     <span class="number">0</span>
+<span class="string">HugePages_Free:</span>      <span class="number">0</span>
+<span class="string">HugePages_Rsvd:</span>      <span class="number">0</span>
+<span class="string">Hugepagesize:</span>     <span class="number">2048</span> kB
+</code></pre><p>不仅仅如此，top、vmstat、uptime等等一堆重要的命令中的数据都来自于/proc下的文件。</p>
+<p>下面就聊聊源码的探索过程。<br>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2015/06/02/buffers-and-cached/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/linux/">linux</a>
 </div>
 
 
-<div class="next">
-<a href="/2015/07/27/tibco-fault-tolerance-2/"  title="TIBCO容错研究(2)">
- <strong>下一篇：</strong><br/> 
- <span>TIBCO容错研究(2)
-</span>
-</a>
-</div>
-
-</nav>
-
-	
-
-</div>  
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
-
-  <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
- 
- 
- 
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a>
   </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+
+  <nav id="page-nav" class="clearfix">
+    <a class="extend prev" rel="prev" href="/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+</div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
@@ -398,69 +444,12 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
-      
-      $('#toc.toc-aside').css('display', 'none');
         
     }
   });
 });
 </script>
 
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var ai = $('.article-content>iframe'),
-      ae = $('.article-content>embed'),
-      t  = $('#toc'),
-      ta = $('#toc.toc-aside'),
-      o  = $('.openaside'),
-      c  = $('.closeaside');
-  if(ai.length>0){
-    ai.wrap('<div class="video-container" />');
-  };
-  if(ae.length>0){
-   ae.wrap('<div class="video-container" />');
-  };
-  c.click(function(){
-    ta.css('display', 'block').addClass('fadeIn');
-  });
-  o.click(function(){
-    ta.css('display', 'none');
-  });
-  $(window).scroll(function(){
-    ta.css("top",Math.max(140,320-$(this).scrollTop()));
-  });
-});
-</script>
-
-
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var $this = $('.share'),
-      url = $this.attr('data-url'),
-      encodedUrl = encodeURIComponent(url),
-      title = $this.attr('data-title'),
-      tsina = $this.attr('data-tsina'),
-      description = $this.attr('description');
-  var html = [
-  '<a href="#" class="overlay" id="qrcode"></a>',
-  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
-  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
-  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
-  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
-  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
-  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
-  '<span title="Share to"></span>'
-  ].join('');
-  $this.append(html);
-  $('.article-share-qrcode').click(function(){
-    var imgSrc = $('#qrcode-pic').attr('data-src');
-    $('#qrcode-pic').attr('src', imgSrc);
-    $('#qrcode-pic').load(function(){
-        $('.qrcode strong').text(' ');
-    });
-  });
-});     
-</script>
 
 
 
@@ -521,4 +510,4 @@ $(document).ready(function(){
 <!-- Tiny_search End -->
 
   </body>
-</html>
+ </html>

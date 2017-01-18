@@ -4,37 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>TIBCO容错研究(3) | 郑鸿志的博客</title>
+    <title>从一个简单的例子开始学习jmeter源码 | 郑鸿志的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="郑鸿志">
     
 
     
-    <meta name="description" content="Spring框架的重连机制研究
-Spring提供了2个MDP容器：org.springframework.jms.listener.DefaultMessageListenerContainer、org.springframework.jms.listener.SimpleMessageListenerContainer。
-DefaultMessageListenerContainer重连机制
-D">
+    <meta name="description" content="Jmeter的整体代码结构可参考官网wiki（ http://wiki.apache.org/jmeter/DeveloperManual/DirStructure ）。
+总体代码量不是算小，如何阅读是一个问题，反复思量，决定从一个最简单的例子入手。
+一个性能测试的实例至至少应包含多线程执行一项测试任务和收集汇总测试结果这两部分。首先抛开对多线程和测试结果的注意力，我们先构建一个最简的测试任务。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TIBCO容错研究(3)">
-<meta property="og:url" content="http://www.zhenghongzhi.cn/2015/07/30/tibco-fault-tolerance-3/index.html">
+<meta property="og:title" content="从一个简单的例子开始学习jmeter源码">
+<meta property="og:url" content="http://www.zhenghongzhi.cn/2016/02/15/study-jmeter-source-from-a-simple-example/index.html">
 <meta property="og:site_name" content="郑鸿志的博客">
-<meta property="og:description" content="Spring框架的重连机制研究
-Spring提供了2个MDP容器：org.springframework.jms.listener.DefaultMessageListenerContainer、org.springframework.jms.listener.SimpleMessageListenerContainer。
-DefaultMessageListenerContainer重连机制
-D">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730001.png">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730002.png">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730003.png">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730004.png">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730005.png">
-<meta property="og:updated_time" content="2015-07-30T12:59:59.765Z">
+<meta property="og:description" content="Jmeter的整体代码结构可参考官网wiki（ http://wiki.apache.org/jmeter/DeveloperManual/DirStructure ）。
+总体代码量不是算小，如何阅读是一个问题，反复思量，决定从一个最简单的例子入手。
+一个性能测试的实例至至少应包含多线程执行一项测试任务和收集汇总测试结果这两部分。首先抛开对多线程和测试结果的注意力，我们先构建一个最简的测试任务。">
+<meta property="og:updated_time" content="2016-02-15T09:02:46.930Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TIBCO容错研究(3)">
-<meta name="twitter:description" content="Spring框架的重连机制研究
-Spring提供了2个MDP容器：org.springframework.jms.listener.DefaultMessageListenerContainer、org.springframework.jms.listener.SimpleMessageListenerContainer。
-DefaultMessageListenerContainer重连机制
-D">
+<meta name="twitter:title" content="从一个简单的例子开始学习jmeter源码">
+<meta name="twitter:description" content="Jmeter的整体代码结构可参考官网wiki（ http://wiki.apache.org/jmeter/DeveloperManual/DirStructure ）。
+总体代码量不是算小，如何阅读是一个问题，反复思量，决定从一个最简单的例子入手。
+一个性能测试的实例至至少应包含多线程执行一项测试任务和收集汇总测试结果这两部分。首先抛开对多线程和测试结果的注意力，我们先构建一个最简的测试任务。">
 
     
     <link rel="alternative" href="/atom.xml" title="郑鸿志的博客" type="application/atom+xml">
@@ -93,14 +85,14 @@ D">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/07/30/tibco-fault-tolerance-3/" title="TIBCO容错研究(3)" itemprop="url">TIBCO容错研究(3)</a>
+      <a href="/2016/02/15/study-jmeter-source-from-a-simple-example/" title="从一个简单的例子开始学习jmeter源码" itemprop="url">从一个简单的例子开始学习jmeter源码</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
 		
   <p class="article-time">
-    <time datetime="2015-07-30T12:24:56.000Z" itemprop="datePublished"> 发表于 2015-07-30</time>
+    <time datetime="2016-02-15T13:01:22.000Z" itemprop="datePublished"> 发表于 2016-02-15</time>
     
   </p>
 </header>
@@ -113,32 +105,44 @@ D">
 		
 		</div>
 		
-		<p><strong>Spring框架的重连机制研究</strong></p>
-<p>Spring提供了2个MDP容器：org.springframework.jms.listener.DefaultMessageListenerContainer、org.springframework.jms.listener.SimpleMessageListenerContainer。</p>
-<p><strong>DefaultMessageListenerContainer重连机制</strong></p>
-<p>DefaultMessageListenerContainer启动内部类AsyncMessageListenerInvoker作为线程。</p>
-<p> <img src="/images/20150730001.png" alt="DefaultMessageListenerContainer重连机制"><br><a id="more"></a><br>当run()出现异常，则间隔5秒做一次重连尝试，直到成功。</p>
-<p> <img src="/images/20150730002.png" alt="DefaultMessageListenerContainer重连机制"></p>
-<p> <img src="/images/20150730003.png" alt="DefaultMessageListenerContainer重连机制"></p>
-<p> <img src="/images/20150730004.png" alt="DefaultMessageListenerContainer重连机制"></p>
-<p><strong>SimpleMessageListenerContainer重连机制</strong></p>
-<p>SimpleMessageListenerContainer 注册JMSException监听，当出现异常时，在onException中做重连。</p>
-<p><img src="/images/20150730005.png" alt="SimpleMessageListenerContainer重连机制"></p>
-<p>问题是，如果连接不成功，则没有再次重连的机制，因此容错能力较弱</p>
-  
+		<p>Jmeter的整体代码结构可参考官网wiki（ <a href="http://wiki.apache.org/jmeter/DeveloperManual/DirStructure" target="_blank" rel="external">http://wiki.apache.org/jmeter/DeveloperManual/DirStructure</a> ）。</p>
+<p>总体代码量不是算小，如何阅读是一个问题，反复思量，决定从一个最简单的例子入手。</p>
+<p>一个性能测试的实例至至少应包含多线程执行一项测试任务和收集汇总测试结果这两部分。首先抛开对多线程和测试结果的注意力，我们先构建一个最简的测试任务。</p>
+<p>jmeter除了支持HTTP、FTP之类的应用协议外，还可以自己编写java代码作为测试项，这样，我们可以抛开各种繁文缛节的协议，看到最简单的东西。</p>
+<pre><code><span class="keyword">import</span> org.apache.jmeter.config.<span class="type">Arguments</span>;
+<span class="keyword">import</span> org.apache.jmeter.protocol.java.sampler.<span class="type">AbstractJavaSamplerClient</span>;
+<span class="keyword">import</span> org.apache.jmeter.protocol.java.sampler.<span class="type">JavaSamplerContext</span>;
+<span class="keyword">import</span> org.apache.jmeter.samplers.<span class="type">SampleResult</span>;
+
+public <span class="class"><span class="keyword">class</span> <span class="title">DemoJavaTest</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">AbstractJavaSamplerClient</span> {</span>
+    <span class="annotation">@Override</span>
+    public <span class="type">SampleResult</span> runTest(<span class="type">JavaSamplerContext</span> context) {
+        <span class="type">SampleResult</span> sr = <span class="keyword">new</span> <span class="type">SampleResult</span>();
+        sr.sampleStart();
+        <span class="keyword">try</span> {            
+            <span class="comment">// 做想做的事情</span>
+            sr.setSuccessful(<span class="literal">true</span>);
+        } <span class="keyword">catch</span> (<span class="type">Exception</span> e) {
+            sr.setSuccessful(<span class="literal">false</span>);
+        }
+        sr.sampleEnd();
+        <span class="keyword">return</span> sr;
+    }
+}
+</code></pre>  
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/Java/">Java</a>
+  <a class="article-category-link" href="/categories/Performance/">Performance</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/JMS/">JMS</a><a href="/tags/Java/">Java</a><a href="/tags/Spring/">Spring</a>
+  <span></span> <a href="/tags/Performance/">Performance</a>
   </div>
 
 </div>
@@ -147,7 +151,7 @@ D">
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.zhenghongzhi.cn/2015/07/30/tibco-fault-tolerance-3/" data-title="TIBCO容错研究(3) | 郑鸿志的博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.zhenghongzhi.cn/2016/02/15/study-jmeter-source-from-a-simple-example/" data-title="从一个简单的例子开始学习jmeter源码 | 郑鸿志的博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -161,18 +165,18 @@ D">
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/08/18/close_wait/" title="恼人的CLOSE_WAIT">
+ <a href="/2017/01/13/study_zabbix/" title="跟着zabbix学监控--前言">
   <strong>上一篇：</strong><br/>
   <span>
-  恼人的CLOSE_WAIT</span>
+  跟着zabbix学监控--前言</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2015/07/27/tibco-fault-tolerance-2/"  title="TIBCO容错研究(2)">
+<a href="/2016/01/28/build-jmeter/"  title="获取Jmeter源码及部署调试环境">
  <strong>下一篇：</strong><br/> 
- <span>TIBCO容错研究(2)
+ <span>获取Jmeter源码及部署调试环境
 </span>
 </a>
 </div>

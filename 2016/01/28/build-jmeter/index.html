@@ -4,37 +4,27 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>TIBCO容错研究(3) | 郑鸿志的博客</title>
+    <title>获取Jmeter源码及部署调试环境 | 郑鸿志的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="郑鸿志">
     
 
     
-    <meta name="description" content="Spring框架的重连机制研究
-Spring提供了2个MDP容器：org.springframework.jms.listener.DefaultMessageListenerContainer、org.springframework.jms.listener.SimpleMessageListenerContainer。
-DefaultMessageListenerContainer重连机制
-D">
+    <meta name="description" content="Jmeter是一款应用较为广泛的开源性能测试工具，由于工作中接手了前辈遗留下来的Jmeter插件，因此需要搭建一个Jmeter的调试环境。
+Jmeter官网提供了一个SVN地址的获取页面（ http://jmeter.apache.org/svnindex.html ），通过指引，我们可以从 http://svn.apache.org/repos/asf/jmeter/trunk 获取一个只读的版">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TIBCO容错研究(3)">
-<meta property="og:url" content="http://www.zhenghongzhi.cn/2015/07/30/tibco-fault-tolerance-3/index.html">
+<meta property="og:title" content="获取Jmeter源码及部署调试环境">
+<meta property="og:url" content="http://www.zhenghongzhi.cn/2016/01/28/build-jmeter/index.html">
 <meta property="og:site_name" content="郑鸿志的博客">
-<meta property="og:description" content="Spring框架的重连机制研究
-Spring提供了2个MDP容器：org.springframework.jms.listener.DefaultMessageListenerContainer、org.springframework.jms.listener.SimpleMessageListenerContainer。
-DefaultMessageListenerContainer重连机制
-D">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730001.png">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730002.png">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730003.png">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730004.png">
-<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20150730005.png">
-<meta property="og:updated_time" content="2015-07-30T12:59:59.765Z">
+<meta property="og:description" content="Jmeter是一款应用较为广泛的开源性能测试工具，由于工作中接手了前辈遗留下来的Jmeter插件，因此需要搭建一个Jmeter的调试环境。
+Jmeter官网提供了一个SVN地址的获取页面（ http://jmeter.apache.org/svnindex.html ），通过指引，我们可以从 http://svn.apache.org/repos/asf/jmeter/trunk 获取一个只读的版">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/20160128195047.png">
+<meta property="og:updated_time" content="2016-02-15T03:18:17.495Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TIBCO容错研究(3)">
-<meta name="twitter:description" content="Spring框架的重连机制研究
-Spring提供了2个MDP容器：org.springframework.jms.listener.DefaultMessageListenerContainer、org.springframework.jms.listener.SimpleMessageListenerContainer。
-DefaultMessageListenerContainer重连机制
-D">
+<meta name="twitter:title" content="获取Jmeter源码及部署调试环境">
+<meta name="twitter:description" content="Jmeter是一款应用较为广泛的开源性能测试工具，由于工作中接手了前辈遗留下来的Jmeter插件，因此需要搭建一个Jmeter的调试环境。
+Jmeter官网提供了一个SVN地址的获取页面（ http://jmeter.apache.org/svnindex.html ），通过指引，我们可以从 http://svn.apache.org/repos/asf/jmeter/trunk 获取一个只读的版">
 
     
     <link rel="alternative" href="/atom.xml" title="郑鸿志的博客" type="application/atom+xml">
@@ -93,14 +83,14 @@ D">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/07/30/tibco-fault-tolerance-3/" title="TIBCO容错研究(3)" itemprop="url">TIBCO容错研究(3)</a>
+      <a href="/2016/01/28/build-jmeter/" title="获取Jmeter源码及部署调试环境" itemprop="url">获取Jmeter源码及部署调试环境</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
 		
   <p class="article-time">
-    <time datetime="2015-07-30T12:24:56.000Z" itemprop="datePublished"> 发表于 2015-07-30</time>
+    <time datetime="2016-01-28T11:27:09.000Z" itemprop="datePublished"> 发表于 2016-01-28</time>
     
   </p>
 </header>
@@ -113,18 +103,14 @@ D">
 		
 		</div>
 		
-		<p><strong>Spring框架的重连机制研究</strong></p>
-<p>Spring提供了2个MDP容器：org.springframework.jms.listener.DefaultMessageListenerContainer、org.springframework.jms.listener.SimpleMessageListenerContainer。</p>
-<p><strong>DefaultMessageListenerContainer重连机制</strong></p>
-<p>DefaultMessageListenerContainer启动内部类AsyncMessageListenerInvoker作为线程。</p>
-<p> <img src="/images/20150730001.png" alt="DefaultMessageListenerContainer重连机制"><br><a id="more"></a><br>当run()出现异常，则间隔5秒做一次重连尝试，直到成功。</p>
-<p> <img src="/images/20150730002.png" alt="DefaultMessageListenerContainer重连机制"></p>
-<p> <img src="/images/20150730003.png" alt="DefaultMessageListenerContainer重连机制"></p>
-<p> <img src="/images/20150730004.png" alt="DefaultMessageListenerContainer重连机制"></p>
-<p><strong>SimpleMessageListenerContainer重连机制</strong></p>
-<p>SimpleMessageListenerContainer 注册JMSException监听，当出现异常时，在onException中做重连。</p>
-<p><img src="/images/20150730005.png" alt="SimpleMessageListenerContainer重连机制"></p>
-<p>问题是，如果连接不成功，则没有再次重连的机制，因此容错能力较弱</p>
+		<p>Jmeter是一款应用较为广泛的开源性能测试工具，由于工作中接手了前辈遗留下来的Jmeter插件，因此需要搭建一个Jmeter的调试环境。</p>
+<p>Jmeter官网提供了一个SVN地址的获取页面（ <a href="http://jmeter.apache.org/svnindex.html" target="_blank" rel="external">http://jmeter.apache.org/svnindex.html</a> ），通过指引，我们可以从 <a href="http://svn.apache.org/repos/asf/jmeter/trunk" target="_blank" rel="external">http://svn.apache.org/repos/asf/jmeter/trunk</a> 获取一个只读的版本。</p>
+<p>下载后，需要将 eclipse.project、eclipse.classpath 两个文件改名为.project、.classpath，这个地方比较坑，Win7上直接改名被拒绝，只能打开CMD窗口用rename命令解决。搞定后可以在eclipse导入这个工程，<br><a id="more"></a><br>SVN上并没有提供依赖的Jar，在下载的文件中包含了一个build.xml，这个是ANT的配置文件，切换到CMD窗口，进入当前目录，执行 ant download_jars，依赖的jar会自动下载到 lib目录下。 刷新项目后，全部错误消失。</p>
+<p>但此时依然不能在eclipse中运行jmeter，还有另外两个坑需要填平。</p>
+<p>第一，jmeter运行时不需要指定-cp参数，自己根据规则加载依赖的jar 。jmeter自身的核心jar放在lib\ext下，由jmeter自己加载，需要先编译好这些文件，否则无法启动。可以用 ant install 来解决。</p>
+<p>第二，由于制成品的jmeter在jmeter\bin启动，工作路径也就是jmeter\bin，因此代码中会取上层目录为项目路径，而我们在eclipse下启动，工作路径为jmeter，因此启动报错。解决的办法有两种，一种是修改源码 ，另一种是在启动时加参数 -Djmeter.home=jmeter项目路径，如下图：<br> <img src="/images/20160128195047.png" alt="Jmeter启动参数"></p>
+<p>至此，执行NewDriver，可以顺利出现Jmeter主界面。</p>
+<p>PS：如果觉得下载和编译jar太麻烦的同学，也可以直接下载制成品，将相关的jar复制到对应的目录。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -132,13 +118,13 @@ D">
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/Java/">Java</a>
+  <a class="article-category-link" href="/categories/Performance/">Performance</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/JMS/">JMS</a><a href="/tags/Java/">Java</a><a href="/tags/Spring/">Spring</a>
+  <span></span> <a href="/tags/Performance/">Performance</a>
   </div>
 
 </div>
@@ -147,7 +133,7 @@ D">
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.zhenghongzhi.cn/2015/07/30/tibco-fault-tolerance-3/" data-title="TIBCO容错研究(3) | 郑鸿志的博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.zhenghongzhi.cn/2016/01/28/build-jmeter/" data-title="获取Jmeter源码及部署调试环境 | 郑鸿志的博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -161,18 +147,18 @@ D">
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/08/18/close_wait/" title="恼人的CLOSE_WAIT">
+ <a href="/2016/02/15/study-jmeter-source-from-a-simple-example/" title="从一个简单的例子开始学习jmeter源码">
   <strong>上一篇：</strong><br/>
   <span>
-  恼人的CLOSE_WAIT</span>
+  从一个简单的例子开始学习jmeter源码</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2015/07/27/tibco-fault-tolerance-2/"  title="TIBCO容错研究(2)">
+<a href="/2015/08/18/close_wait/"  title="恼人的CLOSE_WAIT">
  <strong>下一篇：</strong><br/> 
- <span>TIBCO容错研究(2)
+ <span>恼人的CLOSE_WAIT
 </span>
 </a>
 </div>

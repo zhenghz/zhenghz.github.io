@@ -80,7 +80,151 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/01/28/jmeter/" title="获取Jmeter源码及部署调试环境" itemprop="url">获取Jmeter源码及部署调试环境</a>
+      <a href="/2017/01/13/study_zabbix/" title="跟着zabbix学监控--前言" itemprop="url">跟着zabbix学监控--前言</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
+		
+  <p class="article-time">
+    <time datetime="2017-01-13T04:56:02.000Z" itemprop="datePublished"> 发表于 2017-01-13</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Zabbix 是一款常见的运维监控工具，可以方便的监控多种主机系统资源，JVM资源 以及其他各种可用脚本抓取的资源。<br>目前我们尝试使用Zabbix 作为性能测试的一般性监控工具，主要原因有三点：<br>1、性能测试环境的主机有100多台，单机形的工具面对这么多机器显得很无力，因基础监控不全而导致各种无效分析时有发生。每台机器都安装Zabbix后，基础监控数据一目了然，可快速发现问题。<br>2、zabbix 可通过命令行方式获取监控数据，便于扩展。<br>3、zabbix 数据落地到数据库中，便于后期分析，便于自行捞取数据，生成报表。</p>
+<p>工欲善其事，必先利其器，既然使用Zabbix做为性能测试的监控工具，我们就先的搞清楚Zabbix可以提供哪些监控。<br>下面将分为Linux 、JVM、Redis、Mysql分别研究。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Zabbix/">Zabbix</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Linux/">Linux</a><a href="/tags/Zabbix/">Zabbix</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/02/15/study-jmeter-source-from-a-simple-example/" title="从一个简单的例子开始学习jmeter源码" itemprop="url">从一个简单的例子开始学习jmeter源码</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
+		
+  <p class="article-time">
+    <time datetime="2016-02-15T13:01:22.000Z" itemprop="datePublished"> 发表于 2016-02-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Jmeter的整体代码结构可参考官网wiki（ <a href="http://wiki.apache.org/jmeter/DeveloperManual/DirStructure" target="_blank" rel="external">http://wiki.apache.org/jmeter/DeveloperManual/DirStructure</a> ）。</p>
+<p>总体代码量不是算小，如何阅读是一个问题，反复思量，决定从一个最简单的例子入手。</p>
+<p>一个性能测试的实例至至少应包含多线程执行一项测试任务和收集汇总测试结果这两部分。首先抛开对多线程和测试结果的注意力，我们先构建一个最简的测试任务。</p>
+<p>jmeter除了支持HTTP、FTP之类的应用协议外，还可以自己编写java代码作为测试项，这样，我们可以抛开各种繁文缛节的协议，看到最简单的东西。</p>
+<pre><code><span class="keyword">import</span> org.apache.jmeter.config.<span class="type">Arguments</span>;
+<span class="keyword">import</span> org.apache.jmeter.protocol.java.sampler.<span class="type">AbstractJavaSamplerClient</span>;
+<span class="keyword">import</span> org.apache.jmeter.protocol.java.sampler.<span class="type">JavaSamplerContext</span>;
+<span class="keyword">import</span> org.apache.jmeter.samplers.<span class="type">SampleResult</span>;
+
+public <span class="class"><span class="keyword">class</span> <span class="title">DemoJavaTest</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">AbstractJavaSamplerClient</span> {</span>
+    <span class="annotation">@Override</span>
+    public <span class="type">SampleResult</span> runTest(<span class="type">JavaSamplerContext</span> context) {
+        <span class="type">SampleResult</span> sr = <span class="keyword">new</span> <span class="type">SampleResult</span>();
+        sr.sampleStart();
+        <span class="keyword">try</span> {            
+            <span class="comment">// 做想做的事情</span>
+            sr.setSuccessful(<span class="literal">true</span>);
+        } <span class="keyword">catch</span> (<span class="type">Exception</span> e) {
+            sr.setSuccessful(<span class="literal">false</span>);
+        }
+        sr.sampleEnd();
+        <span class="keyword">return</span> sr;
+    }
+}
+</code></pre>
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Performance/">Performance</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Performance/">Performance</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/01/28/build-jmeter/" title="获取Jmeter源码及部署调试环境" itemprop="url">获取Jmeter源码及部署调试环境</a>
   </h1>
   <p class="article-author">By
        
@@ -93,14 +237,14 @@
 </header>
     <div class="article-content">
         
-        <p>Jmeter是一款应用较为广泛的开源性能测试工具，由于工作中接手了前辈遗留下来的Jmeter插件，不得不弄一个Jmeter的调试环境。</p>
+        <p>Jmeter是一款应用较为广泛的开源性能测试工具，由于工作中接手了前辈遗留下来的Jmeter插件，因此需要搭建一个Jmeter的调试环境。</p>
 <p>Jmeter官网提供了一个SVN地址的获取页面（ <a href="http://jmeter.apache.org/svnindex.html">http://jmeter.apache.org/svnindex.html</a> ），通过指引，我们可以从 <a href="http://svn.apache.org/repos/asf/jmeter/trunk">http://svn.apache.org/repos/asf/jmeter/trunk</a> 获取一个只读的版本。</p>
 <p>下载后，需要将 eclipse.project、eclipse.classpath 两个文件改名为.project、.classpath，这个地方比较坑，Win7上直接改名被拒绝，只能打开CMD窗口用rename命令解决。搞定后可以在eclipse导入这个工程，<br>
         
         
         <p class="article-more-link">
           
-            <a href="/2016/01/28/jmeter/#more">Read More</a>
+            <a href="/2016/01/28/build-jmeter/#more">Read More</a>
           
        </p>
     </div>
@@ -603,161 +747,10 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/06/03/webdriver-textnode/" title="WebDriver如何取标签外的文本" itemprop="url">WebDriver如何取标签外的文本</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
-		
-  <p class="article-time">
-    <time datetime="2015-06-03T04:02:26.000Z" itemprop="datePublished"> 发表于 2015-06-03</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>在我们的自动化测试过程中，总是会碰到各种难搞的问题，比如说我们需要取标签外的文本信息，今天又被问到这个问题，所以重贴旧文。</p>
-<pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"div1"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div1<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话1
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div2<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话2
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div3<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话3
-    <span class="tag">&lt;<span class="title">span</span> <span class="attribute">name</span>=<span class="value">"p1"</span>&gt;</span>div4<span class="tag">&lt;/<span class="title">span</span>&gt;</span>废话4
-<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-</code></pre><p>对于上面的HTML，如果我们想获取 “废话1”、“废话2”之类的文字，使用Webdriver 的 findElement是没有办法解决的，必须想起他办法解决。首先，我们了解一个概念，”废话1”这种，在HTML DOM里面叫做 textNode，是可以设置和获取的。<br>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/06/03/webdriver-textnode/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
 
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/TestAutomation/">TestAutomation</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/TestAutomation/">TestAutomation</a><a href="/tags/Webdriver/">Webdriver</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/06/02/buffers-and-cached/" title="free中的buffers和cached(1)" itemprop="url">free中的buffers和cached(1)</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
-		
-  <p class="article-time">
-    <time datetime="2015-06-02T07:39:04.000Z" itemprop="datePublished"> 发表于 2015-06-02</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>linux查看系统内存常用命令free中有2个重要的参数buffers和cached：</p>
-<pre><code>                     total       used       free     shared    buffers     cached
-Mem:      <span class="number">16436192</span>   <span class="number">10914412</span>    <span class="number">5521780</span>          0     502256    <span class="number">5795248</span>
--/+ buffers/cache:    <span class="number">4616908</span>   <span class="number">11819284</span>
-Swap:      <span class="number">4096532</span>        116    <span class="number">4096416</span>
-</code></pre><p>这2个参数到底是什么意思，百度了各种文章，大多概念混淆、含糊不清，难以得到满意的答案，今天做一个源码探索，发现free原来就是获取/proc/meminfo中对应的参数。</p>
-<p>执行 free;cat /proc/meminfo，两边的 buffers、cached完全一致</p>
-<pre><code>             total       used       free     shared    buffers     cached
-<span class="string">Mem:</span>      <span class="number">16436192</span>   <span class="number">10914716</span>    <span class="number">5521476</span>          <span class="number">0</span>     <span class="number">502256</span>    <span class="number">5795248</span>
--<span class="regexp">/+ buffers/</span><span class="string">cache:</span>    <span class="number">4617212</span>   <span class="number">11818980</span>
-<span class="string">Swap:</span>      <span class="number">4096532</span>        <span class="number">116</span>    <span class="number">4096416</span>
-——————————————————————————————————————————————————————————————————————————
-<span class="string">MemTotal:</span>     <span class="number">16436192</span> kB
-<span class="string">MemFree:</span>       <span class="number">5521468</span> kB
-<span class="string">Buffers:</span>        <span class="number">502256</span> kB
-<span class="string">Cached:</span>        <span class="number">5795248</span> kB
-<span class="string">SwapCached:</span>         <span class="number">12</span> kB
-<span class="string">Active:</span>        <span class="number">6215352</span> kB
-<span class="string">Inactive:</span>      <span class="number">4218000</span> kB
-<span class="string">HighTotal:</span>           <span class="number">0</span> kB
-.....
-<span class="string">HugePages_Total:</span>     <span class="number">0</span>
-<span class="string">HugePages_Free:</span>      <span class="number">0</span>
-<span class="string">HugePages_Rsvd:</span>      <span class="number">0</span>
-<span class="string">Hugepagesize:</span>     <span class="number">2048</span> kB
-</code></pre><p>不仅仅如此，top、vmstat、uptime等等一堆重要的命令中的数据都来自于/proc下的文件。</p>
-<p>下面就聊聊源码的探索过程。<br>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/06/02/buffers-and-cached/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/linux/">linux</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
+  <nav id="page-nav" class="clearfix">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
+  </nav>
 
 </div>
       <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
@@ -778,11 +771,15 @@ Swap:      <span class="number">4096532</span>        116    <span class="number
 		  
 		
 		  
-			<li><a href="/categories/Performance/" title="Performance">Performance<sup>2</sup></a></li>
+			<li><a href="/categories/Performance/" title="Performance">Performance<sup>3</sup></a></li>
 		  
 		
 		  
 			<li><a href="/categories/TestAutomation/" title="TestAutomation">TestAutomation<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Zabbix/" title="Zabbix">Zabbix<sup>1</sup></a></li>
 		  
 		
 		  
@@ -803,6 +800,10 @@ Swap:      <span class="number">4096532</span>        116    <span class="number
 			
 		
 			
+				<li><a href="/tags/Performance/" title="Performance">Performance<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/JMS/" title="JMS">JMS<sup>3</sup></a></li>
 			
 		
@@ -811,19 +812,23 @@ Swap:      <span class="number">4096532</span>        116    <span class="number
 			
 		
 			
-				<li><a href="/tags/TestAutomation/" title="TestAutomation">TestAutomation<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Performance/" title="Performance">Performance<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/Webdriver/" title="Webdriver">Webdriver<sup>2</sup></a></li>
 			
 		
 			
+				<li><a href="/tags/TestAutomation/" title="TestAutomation">TestAutomation<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Zabbix/" title="Zabbix">Zabbix<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>1</sup></a></li>
 			
 		
 			
@@ -906,7 +911,7 @@ Swap:      <span class="number">4096532</span>        116    <span class="number
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
 		
 		<a href="/about" target="_blank" title="郑鸿志">郑鸿志</a>
 		
