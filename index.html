@@ -80,6 +80,93 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2017/01/16/zabbix_linux_3/" title="跟着zabbix学监控--Linux(3)" itemprop="url">跟着zabbix学监控--Linux(3)</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
+		
+  <p class="article-time">
+    <time datetime="2017-01-15T16:00:00.000Z" itemprop="datePublished"> 发表于 2017-01-16</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>三、Network<br>Network 资源监控的KEY包含：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">KEY</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">net.if.collisions[if]</td>
+<td style="text-align:center">网络冲突数量。返回整型</td>
+</tr>
+<tr>
+<td style="text-align:left">net.if.in[if,<mode>]</td>
+<td style="text-align:center">网络接口上传流量统计。返回整数</td>
+</tr>
+<tr>
+<td style="text-align:left">net.if.out[if,<mode>]</td>
+<td style="text-align:center">网络接口下载流量统计。返回整数</td>
+</tr>
+<tr>
+<td style="text-align:left">net.if.total[if,<mode>]</td>
+<td style="text-align:center">网络接口上传下载流量统计。返回整数</td>
+</tr>
+</tbody>
+</table>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/01/16/zabbix_linux_3/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Zabbix/">Zabbix</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Linux/">Linux</a><a href="/tags/Zabbix/">Zabbix</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2017/01/14/zabbix_linux_2/" title="跟着zabbix学监控--Linux(2)" itemprop="url">跟着zabbix学监控--Linux(2)</a>
   </h1>
   <p class="article-author">By
@@ -87,7 +174,7 @@
 		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
 		
   <p class="article-time">
-    <time datetime="2017-01-14T15:01:57.000Z" itemprop="datePublished"> 发表于 2017-01-14</time>
+    <time datetime="2017-01-13T16:00:00.000Z" itemprop="datePublished"> 发表于 2017-01-14</time>
     
   </p>
 </header>
@@ -174,7 +261,7 @@
 		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
 		
   <p class="article-time">
-    <time datetime="2017-01-13T04:56:02.000Z" itemprop="datePublished"> 发表于 2017-01-13</time>
+    <time datetime="2017-01-12T16:00:00.000Z" itemprop="datePublished"> 发表于 2017-01-13</time>
     
   </p>
 </header>
@@ -267,7 +354,7 @@
 		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
 		
   <p class="article-time">
-    <time datetime="2017-01-13T04:56:02.000Z" itemprop="datePublished"> 发表于 2017-01-13</time>
+    <time datetime="2017-01-12T16:00:00.000Z" itemprop="datePublished"> 发表于 2017-01-13</time>
     
   </p>
 </header>
@@ -731,69 +818,6 @@ public <span class="class"><span class="keyword">class</span> <span class="title
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/06/23/file.encoding-hash/" title="file.encoding对hash造成的影响" itemprop="url">file.encoding对hash造成的影响</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
-		
-  <p class="article-time">
-    <time datetime="2015-06-23T09:46:02.000Z" itemprop="datePublished"> 发表于 2015-06-23</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>今天同事遇到一个奇怪的问题，Testng测试代码在本地和虚拟机的eclipse上执行没有问题，在jenkins上执行报md5校验错误。从日志可以看出，测试代码中需要做hash的字符串中有中文，初步判断跟字符编码有关系。调用md5方法的入参是String，跟踪代码发现，String需要转换为byte[]，在转byte[]的时候，没有指定字符集则使用默认字符集，默认的字符集来自系统属性file.encoding：</p>
-<p><img src="/images/20150623001.png" alt="java.nio.charset.Charset"></p>
-<p>通过在ant加输出日志，发现jenkins上执行时， file.encoding属性为GBK，而通过visualvm检查本地eclipse执行的程序，file.encoding属性为UTF-8，JVM arguments页可以看到-Dfile.encoding=UTF-8，也就是说eclipse跟据我们项目的编码自动加了参数。</p>
-<p>根据以上分析，有2种解决方案：<br>1、在ant执行tesgng中加入参数 &lt;sysproperty key=”file.encoding” value=”UTF-8” /&gt;<br>2、在hash的时候传入正确编码的byte[]，而不是String。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Java/">Java</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/Java/">Java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
@@ -826,7 +850,7 @@ public <span class="class"><span class="keyword">class</span> <span class="title
 		  
 		
 		  
-			<li><a href="/categories/Zabbix/" title="Zabbix">Zabbix<sup>3</sup></a></li>
+			<li><a href="/categories/Zabbix/" title="Zabbix">Zabbix<sup>4</sup></a></li>
 		  
 		
 		  
@@ -847,11 +871,11 @@ public <span class="class"><span class="keyword">class</span> <span class="title
 			
 		
 			
-				<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>4</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/Zabbix/" title="Zabbix">Zabbix<sup>3</sup></a></li>
+				<li><a href="/tags/Zabbix/" title="Zabbix">Zabbix<sup>4</sup></a></li>
 			
 		
 			

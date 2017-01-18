@@ -4,32 +4,95 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Jar版本不一致造成Spring加载资源文件冲突 | 郑鸿志的博客</title>
+    <title>跟着zabbix学监控--Linux(3) | 郑鸿志的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="郑鸿志">
     
 
     
-    <meta name="description" content="今天调试一个Java测试项目时出现报错：
-Cause: com.ibatis.sqlmap.client.SqlMapException: There is already a statement named XXXX in this SqlMap.
-增加调试参数 -verbose:class 发现报错的相关Jar出现2个不同版本。
-为什么会带来这样的问题：1、测试项目为了调试方便依赖了一堆其他项">
+    <meta name="description" content="三、NetworkNetwork 资源监控的KEY包含：
+
+
+
+KEY
+说明
+
+
+
+
+net.if.collisions[if]
+网络冲突数量。返回整型
+
+
+net.if.in[if,]
+网络接口上传流量统计。返回整数
+
+
+net.if.out[if,]
+网络接口下载流量统计。返回整数
+
+
+net.if.total[if,]
+网络接口上传下载流量统计。返回整数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Jar版本不一致造成Spring加载资源文件冲突">
-<meta property="og:url" content="http://www.zhenghongzhi.cn/2015/06/15/spring-sources-conflict/index.html">
+<meta property="og:title" content="跟着zabbix学监控--Linux(3)">
+<meta property="og:url" content="http://www.zhenghongzhi.cn/2017/01/16/zabbix_linux_3/index.html">
 <meta property="og:site_name" content="郑鸿志的博客">
-<meta property="og:description" content="今天调试一个Java测试项目时出现报错：
-Cause: com.ibatis.sqlmap.client.SqlMapException: There is already a statement named XXXX in this SqlMap.
-增加调试参数 -verbose:class 发现报错的相关Jar出现2个不同版本。
-为什么会带来这样的问题：1、测试项目为了调试方便依赖了一堆其他项">
-<meta property="og:updated_time" content="2015-07-22T02:29:43.339Z">
+<meta property="og:description" content="三、NetworkNetwork 资源监控的KEY包含：
+
+
+
+KEY
+说明
+
+
+
+
+net.if.collisions[if]
+网络冲突数量。返回整型
+
+
+net.if.in[if,]
+网络接口上传流量统计。返回整数
+
+
+net.if.out[if,]
+网络接口下载流量统计。返回整数
+
+
+net.if.total[if,]
+网络接口上传下载流量统计。返回整数">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/2017011601.png">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/2017011602.png">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/2017011603.png">
+<meta property="og:updated_time" content="2017-01-18T07:34:21.141Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jar版本不一致造成Spring加载资源文件冲突">
-<meta name="twitter:description" content="今天调试一个Java测试项目时出现报错：
-Cause: com.ibatis.sqlmap.client.SqlMapException: There is already a statement named XXXX in this SqlMap.
-增加调试参数 -verbose:class 发现报错的相关Jar出现2个不同版本。
-为什么会带来这样的问题：1、测试项目为了调试方便依赖了一堆其他项">
+<meta name="twitter:title" content="跟着zabbix学监控--Linux(3)">
+<meta name="twitter:description" content="三、NetworkNetwork 资源监控的KEY包含：
+
+
+
+KEY
+说明
+
+
+
+
+net.if.collisions[if]
+网络冲突数量。返回整型
+
+
+net.if.in[if,]
+网络接口上传流量统计。返回整数
+
+
+net.if.out[if,]
+网络接口下载流量统计。返回整数
+
+
+net.if.total[if,]
+网络接口上传下载流量统计。返回整数">
 
     
     <link rel="alternative" href="/atom.xml" title="郑鸿志的博客" type="application/atom+xml">
@@ -88,14 +151,14 @@ Cause: com.ibatis.sqlmap.client.SqlMapException: There is already a statement na
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/06/15/spring-sources-conflict/" title="Jar版本不一致造成Spring加载资源文件冲突" itemprop="url">Jar版本不一致造成Spring加载资源文件冲突</a>
+      <a href="/2017/01/16/zabbix_linux_3/" title="跟着zabbix学监控--Linux(3)" itemprop="url">跟着zabbix学监控--Linux(3)</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="郑鸿志" target="_blank" itemprop="author">郑鸿志</a>
 		
   <p class="article-time">
-    <time datetime="2015-06-15T08:59:01.000Z" itemprop="datePublished"> 发表于 2015-06-15</time>
+    <time datetime="2017-01-15T16:00:00.000Z" itemprop="datePublished"> 发表于 2017-01-16</time>
     
   </p>
 </header>
@@ -108,11 +171,39 @@ Cause: com.ibatis.sqlmap.client.SqlMapException: There is already a statement na
 		
 		</div>
 		
-		<p>今天调试一个Java测试项目时出现报错：</p>
-<pre><code>Cause: com<span class="class">.ibatis</span><span class="class">.sqlmap</span><span class="class">.client</span><span class="class">.SqlMapException</span>: There is already <span class="tag">a</span> statement named XXXX <span class="keyword">in</span> this SqlMap.
-</code></pre><p>增加调试参数 -verbose:class 发现报错的相关Jar出现2个不同版本。</p>
-<p>为什么会带来这样的问题：<br>1、测试项目为了调试方便依赖了一堆其他项目<br>2、项目全部依赖ivy<br>3、某个项目的ivy相关Jar做了升级，其他项目未升级<br>4、加载ibatis的xml使用了classpath*，不同的版本的jar，Spring会当作2个不同的资源来处理<br>Failed to parse mapping resource: URL [jar:file:/D:/Local_Repository/ivy-cache/xxx/xxx/jars/xxx-1.5.0.10.jar!/xxx/xxx/xxx.xml]; </p>
-<p>解决办法：<br>1、项目的ivy使用了 rev=”latest.integration”，依赖的全部项目都要做Resolve。<br>2、使用ivy的 Show in Reverse Dependency Explorer 中的 Show all projects in workspace 功能检查jar的冲突</p>
+		<p>三、Network<br>Network 资源监控的KEY包含：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">KEY</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">net.if.collisions[if]</td>
+<td style="text-align:center">网络冲突数量。返回整型</td>
+</tr>
+<tr>
+<td style="text-align:left">net.if.in[if,<mode>]</mode></td>
+<td style="text-align:center">网络接口上传流量统计。返回整数</td>
+</tr>
+<tr>
+<td style="text-align:left">net.if.out[if,<mode>]</mode></td>
+<td style="text-align:center">网络接口下载流量统计。返回整数</td>
+</tr>
+<tr>
+<td style="text-align:left">net.if.total[if,<mode>]</mode></td>
+<td style="text-align:center">网络接口上传下载流量统计。返回整数</td>
+</tr>
+</tbody>
+</table>
+<a id="more"></a>
+<p>以上数据全部来自  /proc/net/dev<br><img src="/images/2017011601.png" alt="cat /proc/net/dev"></p>
+<p>数据分为左右两部分，左边为输入，右边为输出，参数并不完全相同。<br>net.if.collisions[if]，数据来自 输出部分的 colls 列，if 为具体的网卡接口名，如上图，为lo或eth0，lo为本地<br>跟踪linux内核可以发现，该数据来自网卡驱动，仅限与输出中断时发生。<br><img src="/images/2017011602.png" alt="网卡驱动代码"></p>
+<p><em>Entenet的基本特征是采用一种称为载波监听多路访问/冲突检测CSMA/CD(Carrier Sense Multiple Access/Collision Detection)的共享访问方案，即多个工作站都连接在一条总线上，所有的工作站都不断向总线上发出监听信号，但在同一时刻只能有一个工作站在总线上进行传输，而其它工作站必须等待其传输结束后再开始自己的传输。</em></p>
+<p>colls 列是否与此有关，待确认。</p>
+<p>net.if.in[if,<mode>] 、net.if.out[if,<mode>]、net.if.total[if,<mode>]，if 参数如前所述，<br>mode包含：不填写、bytes、packets、errors、dropped，其中不填写与填写bytes等价。net.if.in 、net.if.out 分表取输入输入对应列的数值。net.if.total 为net.if.in 、net.if.out的合计值。<br>由于输出的值均为过去的历史值合计，zabbix 在对这一类值存贮前做了计算处理：<br><img src="/images/2017011603.png" alt="每秒速率"><br>将当前值与历史值相减，并除以时间差，得到这个时间段的每秒平均值。</mode></mode></mode></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -120,13 +211,13 @@ Cause: com.ibatis.sqlmap.client.SqlMapException: There is already a statement na
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/Java/">Java</a>
+  <a class="article-category-link" href="/categories/Zabbix/">Zabbix</a>
 </div>
 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/Java/">Java</a><a href="/tags/Spring/">Spring</a>
+  <span></span> <a href="/tags/Linux/">Linux</a><a href="/tags/Zabbix/">Zabbix</a>
   </div>
 
 </div>
@@ -135,7 +226,7 @@ Cause: com.ibatis.sqlmap.client.SqlMapException: There is already a statement na
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.zhenghongzhi.cn/2015/06/15/spring-sources-conflict/" data-title="Jar版本不一致造成Spring加载资源文件冲突 | 郑鸿志的博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.zhenghongzhi.cn/2017/01/16/zabbix_linux_3/" data-title="跟着zabbix学监控--Linux(3) | 郑鸿志的博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -148,19 +239,11 @@ Cause: com.ibatis.sqlmap.client.SqlMapException: There is already a statement na
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/06/19/xpath-predicates/" title="WebDriver使用xpath的谓语做精确定位">
-  <strong>上一篇：</strong><br/>
-  <span>
-  WebDriver使用xpath的谓语做精确定位</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/06/03/webdriver-textnode/"  title="WebDriver如何取标签外的文本">
+<a href="/2017/01/14/zabbix_linux_2/"  title="跟着zabbix学监控--Linux(2)">
  <strong>下一篇：</strong><br/> 
- <span>WebDriver如何取标签外的文本
+ <span>跟着zabbix学监控--Linux(2)
 </span>
 </a>
 </div>
