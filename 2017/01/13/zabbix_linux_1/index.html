@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>跟着zabbix学监控--前言 | 郑鸿志的博客</title>
+    <title>跟着zabbix学监控--Linux(1) | 郑鸿志的博客</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="郑鸿志">
@@ -26,7 +26,7 @@ KEY
 system.cpu.intr
 设备的中断">
 <meta property="og:type" content="article">
-<meta property="og:title" content="跟着zabbix学监控--前言">
+<meta property="og:title" content="跟着zabbix学监控--Linux(1)">
 <meta property="og:url" content="http://www.zhenghongzhi.cn/2017/01/13/zabbix_linux_1/index.html">
 <meta property="og:site_name" content="郑鸿志的博客">
 <meta property="og:description" content="操作系统的监控是性能监控的基础，Linux是目前的主流的服务器端操作系统。下面先从Zabbix对Linux 的监控入手。
@@ -43,9 +43,14 @@ KEY
 
 system.cpu.intr
 设备的中断">
-<meta property="og:updated_time" content="2017-01-18T06:38:47.503Z">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/2017011301.png">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/2017011302.png">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/2017011303.png">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/2017011304.png">
+<meta property="og:image" content="http://www.zhenghongzhi.cn/images/2017011305.png">
+<meta property="og:updated_time" content="2017-01-18T07:03:55.480Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="跟着zabbix学监控--前言">
+<meta name="twitter:title" content="跟着zabbix学监控--Linux(1)">
 <meta name="twitter:description" content="操作系统的监控是性能监控的基础，Linux是目前的主流的服务器端操作系统。下面先从Zabbix对Linux 的监控入手。
 Zabbix对Linux的监控项，从性能测试的角度看可分为  CPU、Memory（含Swap）、Network、Filesystems、Processes 几大类。
 一、CPUCPU资源监控的KEY包含：
@@ -118,7 +123,7 @@ system.cpu.intr
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/01/13/zabbix_linux_1/" title="跟着zabbix学监控--前言" itemprop="url">跟着zabbix学监控--前言</a>
+      <a href="/2017/01/13/zabbix_linux_1/" title="跟着zabbix学监控--Linux(1)" itemprop="url">跟着zabbix学监控--Linux(1)</a>
   </h1>
   <p class="article-author">By
        
@@ -171,7 +176,54 @@ system.cpu.intr
 </tr>
 </tbody>
 </table>
-<p>阅读源码（3.2.2版本）可以发现以上数据来自/proc 文件系统 和系统函数：<br>| KEY | 说明 | 来源 |<br>|:——-|:——-:|——-:|<br>|system.cpu.intr|设备的中断数,返回整数|/proc/stat  intr 行|<br>|system.cpu.load[<cpu>,<mode>]|CPU 负载,返回浮点数|系统函数 getloadavg|<br>|system.cpu.num[<type>]|CPU 数量，返回整数|/proc/cpuinfo 统计processor出现数量|<br>|system.cpu.switches|上下文的数量进行切换，返回整数|/proc/stat  ctxt 行|<br>|system.cpu.util[<cpu>,<type>,<mode>]|CPU 使用率，返回浮点数|/proc/stat  cpu开头的相关行|</mode></type></cpu></type></mode></cpu></p>
+<a id="more"></a>
+<p>阅读源码（3.2.2版本）可以发现以上数据来自/proc 文件系统 和系统函数：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">KEY</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:center">来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">system.cpu.intr</td>
+<td style="text-align:center">设备的中断数,返回整数</td>
+<td style="text-align:center">/proc/stat  intr 行</td>
+</tr>
+<tr>
+<td style="text-align:left">system.cpu.load[<cpu>,<mode>]</mode></cpu></td>
+<td style="text-align:center">CPU 负载,返回浮点数</td>
+<td style="text-align:center">系统函数 getloadavg</td>
+</tr>
+<tr>
+<td style="text-align:left">system.cpu.num[<type>]</type></td>
+<td style="text-align:center">CPU 数量，返回整数</td>
+<td style="text-align:center">/proc/cpuinfo 统计processor出现数量</td>
+</tr>
+<tr>
+<td style="text-align:left">system.cpu.switches</td>
+<td style="text-align:center">上下文的数量进行切换，返回整数</td>
+<td style="text-align:center">/proc/stat  ctxt 行</td>
+</tr>
+<tr>
+<td style="text-align:left">system.cpu.util[<cpu>,<type>,<mode>]</mode></type></cpu></td>
+<td style="text-align:center">CPU 使用率，返回浮点数</td>
+<td style="text-align:center">/proc/stat  cpu开头的相关行</td>
+</tr>
+</tbody>
+</table>
+<p>磨刀不误砍柴工，想搞清楚每个KEY的含义，先得弄明白数据来源是啥会事儿。<br>/proc/stat 是最重要的CPU信息<br><img src="/images/2017011301.png" alt="cat /proc/stat"><br>以上图为例，包含：<br>1、前三行为CPU 花费在不同场景下的时间，包含总的时间和每个CPU内核的时间。比如主机有2个内核，会显示cpu、cpu0、cpu1三行，其中cpu行为下面两行的合并数据。数据列分为：user、nice、system、idle、iowait、irq、softirq、steal、guest。<br>需要特别说明的以上数据的时间单位为 0.01秒。<br>2、intr行，中断的信息，第1个为自系统启动以来发生的所有的中断的次数，后面每个数对应一个特定中断自系统启动以来所发生的次数。从/proc/interrupts 可以看到具体的数据。<br>存疑：<br>    1)、为什么 /proc/stat 比 /proc/interrupts 显示的特定中断多的多<br>    2)、 /proc/interrupts 中 irq 号非 数字的是啥<br>3、ctxt行，给出了自系统启动以来CPU发生的上下文交换的次数。<br>4、btimet行，从系统启动到现在为止的时间，单位为秒。<br>5、processest行， 自系统启动以来所创建的任务数目。<br>6、procs_runningt行，当前运行队列的任务数目。<br>7、procs_blockedt行，当前被阻塞的任务的数目（等待I/O完成）。<br>以上具体的含义，可以从linux源码（2.6.32.65版本）/fs/proc/stat.c 中略窥一二，以做印证。</p>
+<p>/proc/cpuinfo中的信息较为简单，包含CPU每个核的基本物理参数，不做详述。</p>
+<p>getloadavg() 函数，返回系统运行队列中的进程在不同时间段的平均数目。分为1、5、15分钟三种。（The getloadavg() function returns the number of processes in the system run queue averaged over various periods of time. Up to nelem samples are retrieved and assigned to successive elements of loadavg[]. The system imposes a maximum of 3 samples, representing averages over the last 1, 5, and 15 minutes, respectively.）</p>
+<p>通过上面的基础信息，system.cpu.intr、system.cpu.switches 连个Key的值已经很明确。<br>system.cpu.load[<cpu>,<mode>]  数据来自系统函数：getloadavg。通过  cat /proc/loadavg 或者uptime命令，可以获取到1分钟、5分钟、15分钟的，这是全部CPU的数据，而Zabbix 在对这块数据的处理有所不同，返回的值默认是每CPU的平均值，具体可根据参数理解。<br>参数解释：</mode></cpu></p>
+<p><cpu> 全部或按CPU平均，可选参数：不填、all，percpu，不填==all，all 表示按全部CPU取值，percpu为每CPU的平均值（all的值 除 CPU数量）</cpu></p>
+<p><mode>可选参数：不填、avg1、avg5、avg15，不填==avg1，avg1 表示 1分钟，其他类推</mode></p>
+<p>system.cpu.util[<cpu>,<type>,<mode>]涉及的数据最多，数据来自/proc/stat。前文已经说明/proc/stat 相关行记录的为百分之一毫秒数，并无我们通常看到的比例关系，Zabbix 为了反映这部分数据的百分比，做了特殊处理，在zabbix_agent 启动时，启动了一个 collector 线程（\zabbix_agent\stats.c，除去跟Linux 不相关的代码）：<br><img src="/images/2017011302.png" alt="\zabbix_agent\stats.c"><br>该线程每秒获取一次CPU状态，磁盘状态<br><img src="/images/2017011303.png" alt="\zabbix_agent\stats.c"><br>记录到 ZBX_COLLECTOR_DATA 结构的全局变量里<br><img src="/images/2017011304.png" alt="\zabbix_agent\stats.c "><br>在我们需要获取各CPU类型参数的时候，根据时间范围，获取两个时间点的差值，并计算百分比（\zabbix_agent\cpustat.c）。<br><img src="/images/2017011305.png" alt="\zabbix_agent\cpustat.c "><br>参数解释：</mode></type></cpu></p>
+<p><cpu> cpu 编号，可选参数：不填、all，0-N，不填==all</cpu></p>
+<p><type>可选参数：不填、user、nice、system、idle、iowait、interrupt、softirq、steal、guest、guest_nice，不填写==user</type></p>
+<p><mode>可选参数：不填、avg1、avg5、avg15，不填写=avg1，avg1 表示 1分钟，其他类推</mode></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -194,7 +246,7 @@ system.cpu.intr
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://www.zhenghongzhi.cn/2017/01/13/zabbix_linux_1/" data-title="跟着zabbix学监控--前言 | 郑鸿志的博客" data-tsina="null" class="share clearfix">
+	  <div data-url="http://www.zhenghongzhi.cn/2017/01/13/zabbix_linux_1/" data-title="跟着zabbix学监控--Linux(1) | 郑鸿志的博客" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -207,6 +259,14 @@ system.cpu.intr
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2017/01/14/zabbix_linux_2/" title="跟着zabbix学监控--Linux(2)">
+  <strong>上一篇：</strong><br/>
+  <span>
+  跟着zabbix学监控--Linux(2)</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2017/01/13/study_zabbix/"  title="跟着zabbix学监控--前言">
@@ -254,7 +314,7 @@ system.cpu.intr
 		  
 		
 		  
-			<li><a href="/categories/Zabbix/" title="Zabbix">Zabbix<sup>2</sup></a></li>
+			<li><a href="/categories/Zabbix/" title="Zabbix">Zabbix<sup>3</sup></a></li>
 		  
 		
 		  
@@ -275,6 +335,14 @@ system.cpu.intr
 			
 		
 			
+				<li><a href="/tags/Linux/" title="Linux">Linux<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Zabbix/" title="Zabbix">Zabbix<sup>3</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/Performance/" title="Performance">Performance<sup>3</sup></a></li>
 			
 		
@@ -288,14 +356,6 @@ system.cpu.intr
 		
 			
 				<li><a href="/tags/Webdriver/" title="Webdriver">Webdriver<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Linux/" title="Linux">Linux<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/Zabbix/" title="Zabbix">Zabbix<sup>2</sup></a></li>
 			
 		
 			
