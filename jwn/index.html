@@ -4,6 +4,64 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>靳文娜之简历</title>
 <style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+	font-family: 'microsoft yahei';
+}
+
+#loutinav {
+	width: 35px;
+	position: fixed;
+	top: 200px;
+	right: 130px;
+	border: 1px solid #fff;
+	display: none;
+	
+}
+
+#loutinav ul li {
+	width: 35px;
+	height: 32px;
+	border-bottom: 1px dotted #fff;
+	list-style: none;
+	font-size: 12px;
+	text-align: center;
+	position: relative;
+	cursor: pointer;
+	padding: 10px 0;
+	background: #0e1f4e;
+	color: #fff;
+	box-shadow: #888 0px 0px 10px;
+	border-radius:1px; 
+}
+
+#loutinav ul li span {
+	width: 35px;
+	height: 32px;
+	padding: 10px 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+#loutinav ul li.last {
+	background: #070629;
+	color: #fff;
+	border-bottom: 1px solid #fff;
+}
+
+#loutinav ul li.active span {
+	background: #0d5aea;
+	color: #fff;
+	display: block;
+}
+
+#loutinav ul li:hover span {
+	background: #0d5aea;
+	color: #fff;
+	display: block;
+}
+
 body {
 	margin-left: 0px;
 	margin-top: 0px;
@@ -11,20 +69,67 @@ body {
 	margin-bottom: 0px;
 }
 .main {
-	;
+	
 	background-repeat: repeat-x;
 }
 </style>
 </head>
-
 <body>
-<div class="main">
-   <div align="center">
-   <img src="images/00_fmz.png" align="middle" />
-   </div>
-</div>
-<div align="center"><img src="images/app0.png" /> <img src="images/app01.png" /> <img src="images/app0j.png" /> <img src="images/app1j.png" /><img src="images/app1.png" /> <img src="images/app2.png" /> <img src="images/app3.png" /> <img src="images/mul2.png" /> <img src="images/gwzp0.png" width="1200" height="4166" /> <img src="images/gwzp1.png" /><img src="images/mul3.png" /><img src="images/wyzp1.png" /> <img src="images/wyzp01.png" width="1200" height="3160" /><img src="images/wyzp2.png" /><img src="images/wyzp3.png" /><img src="images/wyzp4.png" /> <img src="images/mul4.png" />  <img src="images/dpzp1.png" /> <img src="images/dpzp2.png" />  <img src="images/mul5.png" /> <img src="images/xczp0.png" /> <img src="images/xczp1.png" /><img src="images/xczp2.png" /><img src="images/xczp3.png" /><img src="images/mul6.png" /> <img src="images/xxlogo1.png" width="1200" height="5118" />
-   <br /><br /><br />
-</div>
+    <div id="loutinav">
+        <ul>
+            <li class="active"><span>作品集</span> </li>
+            <li><span>我的目录</span> </li>
+            <li><span>APP<br>设计</span> </li>
+            <li><span>WEB设计</span> </li>
+            <li><span>产品界面</span> </li>
+            <li><span>数据大屏</span> </li>
+            <li><span>广告宣传</span> </li>
+            <li><span>企业形象</span> </li>
+            <li class="last">TOP<br>顶部</li>
+        </ul>
+    </div>
+
+    <div class="main">
+        <div align="center">
+             <div class="louti" id="id1">
+                <img src="images/00_fmz.png" width="1200" height="683" align="middle" />
+            </div>
+        
+            <div class="louti" id="id2"><img src="images/00_ml.png" />
+            </div>
+       
+            <div class="louti" id="id3">
+   				<img src="images/00_app.png" />
+  			    <img src="images/app0.png" />
+    			<img src="images/app01.png" />
+   				 <img src="images/app0j.png" />
+   				 <img src="images/app1j.png" />
+    			<img src="images/app1.png" />
+   				 <img src="images/app2.png" />
+   				 <img src="images/app3.png" />
+    			<img src="images/app3j.png" />
+			</div>
+         
+            <div class="louti" id="id4"><img src="images/mul2.png" />
+                <img src="images/gwzp0.png" width="1200" height="4166" />
+                <img src="images/gwzp1.png" />
+            </div>
+         <div class="louti"  id="id5"><img src="images/mul3.png" />
+                <img src="images/wyzp1.png" />
+                <img src="images/wyzp01.png" width="1200" height="3160" />
+                <img src="images/wyzp2.png" /><img src="images/wyzp3.png" />
+                <img src="images/wyzp4.png" />
+            </div>
+          <div class="louti" id="id6"><img src="images/mul4.png" /> <img src="images/dpzp1.png" /> <img src="images/dpzp2.png" /> </div>
+          <div class="louti" id="id7"><img src="images/mul5.png" /><img src="images/xczp0.png" /> <img src="images/xczp1.png" /><img src="images/xczp2.png" /><img src="images/xczp3.png" /> </div>
+          <div class="louti" id="id8"><img src="images/mul6.png" /><img src="images/xxlogo1.png" width="1200" height="5118" /> </div>
+        </div>
+        <br />
+        <!--楼层内容结束-->
+        <script src="js/jquery-1.8.3.min.js"></script>
+        <script src="js/js.js"></script>
+        <br />
+        <br />
+    </div>
 </body>
 </html>
